@@ -1,6 +1,6 @@
 ---
 - filename: 'secrets.yml'
-  description: 'AWS RememberMe'
+  description: 'AWS StringofFate'
   content: 'adslkdasflkhjkdfs'
 - filename: 'another.yml'
   description: 'configuration'

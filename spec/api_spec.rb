@@ -9,17 +9,17 @@ require_relative '../app/controllers/app'
 require_relative '../app/models/document'
 
 def app
-  RememberMe::Api
+  StringofFate::Api
 end
 
 DATA = YAML.safe_load File.read('app/db/seeds/document_seeds.yml')
 
-describe 'Test RememberMe Web API' do
+describe 'Test StringofFate Web API' do
   include Rack::Test::Methods
 
   before do
     # Wipe database before each test
-    Dir.glob("#{RememberMe::STORE_DIR}/*.txt").each { |filename| FileUtils.rm(filename) }
+    Dir.glob("#{StringofFate::STORE_DIR}/*.txt").each { |filename| FileUtils.rm(filename) }
   end
 
   it 'should find the root route' do
@@ -29,8 +29,8 @@ describe 'Test RememberMe Web API' do
 
   describe 'Handle documents' do
     it 'HAPPY: should be able to get list of all documents' do
-      RememberMe::Document.new(DATA[0]).save
-      RememberMe::Document.new(DATA[1]).save
+      StringofFate::Document.new(DATA[0]).save
+      StringofFate::Document.new(DATA[1]).save
 
       get 'api/v1/documents'
       result = JSON.parse last_response.body
@@ -38,8 +38,8 @@ describe 'Test RememberMe Web API' do
     end
 
     it 'HAPPY: should be able to get details of a single document' do
-      RememberMe::Document.new(DATA[1]).save
-      id = Dir.glob("#{RememberMe::STORE_DIR}/*.txt").first.split(%r{[/.]})[3]
+      StringofFate::Document.new(DATA[1]).save
+      id = Dir.glob("#{StringofFate::STORE_DIR}/*.txt").first.split(%r{[/.]})[3]
 
       get "/api/v1/documents/#{id}"
       result = JSON.parse last_response.body

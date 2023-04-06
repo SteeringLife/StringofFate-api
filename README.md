@@ -1,6 +1,6 @@
-# RememberMe
+# StringofFate
 
-API of RememberMe
+API of StringofFate
 
 ## Routes
 

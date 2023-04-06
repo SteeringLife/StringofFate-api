@@ -5,8 +5,8 @@ require 'json'
 
 require_relative '../models/document'
 
-module RememberMe
-  # Web controller for RememberMe API
+module StringofFate
+  # Web controller for StringofFate API
   class Api < Roda
     plugin :environments
     plugin :halt
@@ -20,7 +20,7 @@ module RememberMe
 
       routing.root do
         response.status = 200
-        { message: 'RememberMeAPI up at /api/v1' }.to_json
+        { message: 'StringofFate API up at /api/v1' }.to_json
       end
 
       routing.on 'api' do

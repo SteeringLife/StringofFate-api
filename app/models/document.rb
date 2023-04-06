@@ -4,7 +4,7 @@ require 'json'
 require 'base64'
 require 'rbnacl'
 
-module RememberMe
+module StringofFate
   STORE_DIR = 'app/db/store'
 
   # Holds a fill secret document
@@ -25,21 +25,21 @@ module RememberMe
     end
 
     def self.setup
-      Dir.mkdir(RememberMe::STORE_DIR) unless RememberMe::STORE_DIR
+      Dir.mkdir(StringofFate::STORE_DIR) unless StringofFate::STORE_DIR
     end
 
     def save
-      File.write("#{RememberMe::STORE_DIR}/#{id}.txt", to_json)
+      File.write("#{StringofFate::STORE_DIR}/#{id}.txt", to_json)
     end
 
     def self.find(find_id)
-      document_file = File.read("#{RememberMe::STORE_DIR}/#{find_id}.txt")
+      document_file = File.read("#{StringofFate::STORE_DIR}/#{find_id}.txt")
       Document.new JSON.parse(document_file)
     end
 
     def self.all
-      Dir.glob("#{RememberMe::STORE_DIR}/*.txt").map do |file|
-        file.match(%r{#{Regexp.quote(RememberMe::STORE_DIR)}/(.*)\.txt})[1]
+      Dir.glob("#{StringofFate::STORE_DIR}/*.txt").map do |file|
+        file.match(%r{#{Regexp.quote(StringofFate::STORE_DIR)}/(.*)\.txt})[1]
       end
     end
 
