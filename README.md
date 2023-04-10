@@ -34,3 +34,11 @@ Run this API using:
 ```shell
 puma
 ```
+
+### Learn more
+<details>
+<summary>How we develop`</summary>
+
+- We use "dev" branch to manage conflict.
+
+</details>
