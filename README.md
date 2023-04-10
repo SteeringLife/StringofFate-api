@@ -7,9 +7,9 @@ API of StringofFate
 All routes return Json
 
 - GET `/`: Root route shows if Web API is running
-- GET `api/v1/document/`: returns all confiugration IDs
-- GET `api/v1/document/[ID]`: returns details about a single document with given ID
-- POST `api/v1/document/`: creates a new document
+- GET `api/v1/userinfo/`: returns all confiugration IDs
+- GET `api/v1/userinfo/[ID]`: returns details about a single userinfo with given ID
+- POST `api/v1/userinfo/`: creates a new userinfo
 
 ## Install
 

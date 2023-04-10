@@ -7,15 +7,15 @@ require 'rbnacl'
 module StringofFate
   STORE_DIR = 'app/db/store'
 
-  # Holds a fill secret document
-  class Document
-    def initialize(new_document)
+  # Holds a fill secret userinfo
+  class Userinfo
+    def initialize(new_userinfo)
       # TODO: Create some attributes
-      @username    = new_document['username']
-      @id          = new_document['id'] || new_id
-      @friends = new_document['friends']
-      @public_hashtags = new_document['public_hashtags']
-      @links = new_document['links']
+      @username    = new_userinfo['username']
+      @id          = new_userinfo['id'] || new_id
+      @friends = new_userinfo['friends']
+      @public_hashtags = new_userinfo['public_hashtags']
+      @links = new_userinfo['links']
     end
 
     # TODO: create attr_reader
@@ -24,7 +24,7 @@ module StringofFate
     def to_json(options = {})
       JSON(
         { # TODO: convert hash to json
-          type: 'document', # tell json from which class
+          type: 'userinfo', # tell json from which class
           username:,
           id:,
           friends:,
@@ -40,18 +40,18 @@ module StringofFate
       Dir.mkdir(StringofFate::STORE_DIR) unless StringofFate::STORE_DIR
     end
 
-    # Stores document in file store
+    # Stores userinfo in file store
     def save
       File.write("#{StringofFate::STORE_DIR}/#{id}.txt", to_json)
     end
 
-    # Query method to find one document
+    # Query method to find one userinfo
     def self.find(find_id)
-      document_file = File.read("#{StringofFate::STORE_DIR}/#{find_id}.txt")
-      Document.new JSON.parse(document_file)
+      userinfo_file = File.read("#{StringofFate::STORE_DIR}/#{find_id}.txt")
+      Userinfo.new JSON.parse(userinfo_file)
     end
 
-    # Query method to retrieve index of all documents
+    # Query method to retrieve index of all userinfos
     def self.all
       Dir.glob("#{StringofFate::STORE_DIR}/*.txt").map do |file|
         file.match(%r{#{Regexp.quote(StringofFate::STORE_DIR)}/(.*)\.txt})[1]

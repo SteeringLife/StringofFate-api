@@ -3,7 +3,7 @@
 require 'roda'
 require 'json'
 
-require_relative '../models/document'
+require_relative '../models/userinfo'
 
 module StringofFate
   # Web controller for StringofFate API
@@ -12,7 +12,7 @@ module StringofFate
     plugin :halt
 
     configure do
-      Document.setup
+      Userinfo.setup
     end
 
     route do |routing| # rubocop:disable Metrics/BlockLength
@@ -25,32 +25,32 @@ module StringofFate
 
       routing.on 'api' do
         routing.on 'v1' do
-          routing.on 'documents' do
-            # GET api/v1/documents/[id]
+          routing.on 'userinfos' do
+            # GET api/v1/userinfos/[id]
             routing.get String do |id|
               response.status = 200
-              Document.find(id).to_json
+              Userinfo.find(id).to_json
             rescue StandardError
-              routing.halt 404, { message: 'Document not found' }.to_json
+              routing.halt 404, { message: 'Userinfo not found' }.to_json
             end
 
-            # GET api/v1/documents
+            # GET api/v1/userinfos
             routing.get do
               response.status = 200
-              output = { document_ids: Document.all }
+              output = { userinfo_ids: Userinfo.all }
               JSON.pretty_generate(output)
             end
 
-            # POST api/v1/documents
+            # POST api/v1/userinfos
             routing.post do
               new_data = JSON.parse(routing.body.read)
-              new_doc = Document.new(new_data)
+              new_doc = Userinfo.new(new_data)
 
               if new_doc.save
                 response.status = 201
-                { message: 'Document saved', id: new_doc.id }.to_json
+                { message: 'Userinfo saved', id: new_doc.id }.to_json
               else
-                routing.halt 400, { message: 'Could not save document' }.to_json
+                routing.halt 400, { message: 'Could not save userinfo' }.to_json
               end
             end
           end
