@@ -1,7 +1,10 @@
 ---
-- filename: 'secrets.yml'
-  description: 'AWS StringofFate'
-  content: 'adslkdasflkhjkdfs'
-- filename: 'another.yml'
-  description: 'configuration'
-  content: "---\n-key: something\n  another: value"
+
+- username: 'aa'
+  friends: 'a45,d67'
+  public_hashtags: '#first,#NTHU'
+  links: 'FB https://fbfbfb1'
+- username: 'bb'
+  friends: 'a45,b67'
+  public_hashtags: '#Second,#NTHU'
+  links: "---\n-fb: https://fbfbfb2 \n  ig: https://igigig2"
