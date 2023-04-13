@@ -19,7 +19,7 @@ module StringofFate
             attributes: {
               id:,
               nickname:,
-              url:,
+              url:
             }
           },
           included: {
