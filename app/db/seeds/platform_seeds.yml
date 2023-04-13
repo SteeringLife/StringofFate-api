@@ -1,0 +1,5 @@
+---
+- name: 'FB'
+  category: 'SM'
+- name: 'IG'
+  category: 'SM'
