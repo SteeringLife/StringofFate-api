@@ -54,6 +54,77 @@ module StringofFate
               end
             end
           end
+          routing.on 'platforms' do
+            @plat_root = "#{@api_root}/platforms"
+
+            routing.on String do |platform_id|
+              routing.on 'links' do
+                @link_route = "#{@link_route}/#{platform_id}/links"
+                # GET api/v1/platforms/[platform_id]/links/[link_id]
+                routing.get String do |link_id|
+                  link = Link.where(id: link_id, platform_id: platform_id).first
+                  link ? link.to_json : raise('Link not found')
+                rescue StandardError => e
+                  routing.halt 404, { message: e.message }.to_json
+                end
+
+                # GET api/v1/platforms/[platform_id]/links
+                routing.get do
+                  output = { data: Platform.find(id: platform_id).links }
+                  JSON.pretty_generate(output)
+                rescue StandardError
+                  routing.halt 404, message: 'Could not find link'
+                end
+
+                # POST api/v1/platforms/[platform_id]/links
+                routing.post do
+                  new_data = JSON.parse(routing.body.read)
+                  plat = Platform.find(id: platform_id)
+                  new_link = plat.add_link(new_data)
+
+                  if new_link
+                    response.status = 201
+                    response['Location'] = "#{@link_route}/#{new_link.id}"
+                    { message: 'Link saved', id: new_link }.to_json
+                  else
+                    routing.halt 400, { message: 'Could not save link' }
+                  end
+
+                rescue StandardError
+                  routing.halt 500, { message: 'Database error' }.to_json
+                end
+              end
+
+              # GET api/v1/platforms/[platform_id]
+              routing.get do
+                plat = Platform.find(id: platform_id)
+                plat ? plat.to_json : raise('Platform not found')
+              rescue StandardError => e
+                routing.halt 404, { message: e.message }.to_json
+              end
+            end
+
+            # GET api/v1/platforms
+            routing.get do
+              output = { data: Platform.all }
+              JSON.pretty_generate(output)
+            rescue StandardError
+              routing.halt 404, {message: 'Could not find platform'}.to_json
+            end
+
+            # POST api/v1/platforms
+            routing.post do
+              new_data = JSON.parse(routing.body.read)
+              new_plat = Platform.new(new_data)
+              raise 'Could not save platform' unless new_plat.save
+              
+              response.status = 201
+              response['Location'] = "#{@plat_root}/#{new_plat.id}"
+              { message: 'Platform saved', id: new_plat.id }.to_json
+            rescue StandardError => e
+              routing.halt 400, { message: e.message }.to_json
+            end
+          end
         end
       end
     end
