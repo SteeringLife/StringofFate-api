@@ -1,19 +1,22 @@
-# StringofFate
+# StringofFate API
 
-API of StringofFate
+API to store and retrieve platform and link information of digital namecard of String of Fate project.
 
 ## Routes
 
 All routes return Json
 
-- GET `/`: Root route shows if Web API is running
-- GET `api/v1/userinfos/`: returns all confiugration IDs
-- GET `api/v1/userinfos/[ID]`: returns details about a single userinfo with given ID
-- POST `api/v1/userinfos/`: creates a new userinfo
+- GET  `/`: Root route shows if Web API is running
+- GET  `api/v1/platforms/[plat_id]/links/[link_id]`: Get a link
+- GET  `api/v1/platforms/[plat_id]/links`: Get list of links for platform
+- POST `api/v1/platforms/[ID]/links`: Upload link for a platform
+- GET  `api/v1/platforms/[ID]`: Get information about a platform
+- GET  `api/v1/platforms`: Get list of all platforms
+- POST `api/v1/platforms`: Create new platform
 
 ## Install
 
-Install this API by cloning the *relevant branch* and installing required gems from `Gemfile.lock`:
+Install this API by cloning the *relevant branch* and use bundler to install specified gems from `Gemfile.lock`:
 
 ```shell
 bundle install
@@ -54,10 +57,3 @@ Before submitting pull requests, please check if specs, style, and dependency au
 ```shell
 rake release?
 ```
-### Learn more
-<details>
-<summary>How we develop</summary>
-
-- We use "dev" branch to manage conflict.
-
-</details>
