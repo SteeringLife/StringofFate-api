@@ -15,7 +15,7 @@ module StringofFate
       Userinfo.setup
     end
 
-    route do |routing| # rubocop:disable Metrics/BlockLength
+    route do |routing|
       response['Content-Type'] = 'application/json'
 
       routing.root do
@@ -48,7 +48,7 @@ module StringofFate
 
               if new_doc.save
                 response.status = 201
-                { message: 'Userinfo saved', id: new_doc.id }.to_json
+                { message: 'Userinfo saved', data: new_doc }.to_json
               else
                 routing.halt 400, { message: 'Could not save userinfo' }.to_json
               end
@@ -62,7 +62,7 @@ module StringofFate
                 @link_route = "#{@link_route}/#{platform_id}/links"
                 # GET api/v1/platforms/[platform_id]/links/[link_id]
                 routing.get String do |link_id|
-                  link = Link.where(id: link_id, platform_id: platform_id).first
+                  link = Link.where(id: link_id, platform_id:).first
                   link ? link.to_json : raise('Link not found')
                 rescue StandardError => e
                   routing.halt 404, { message: e.message }.to_json
@@ -85,7 +85,7 @@ module StringofFate
                   if new_link
                     response.status = 201
                     response['Location'] = "#{@link_route}/#{new_link.id}"
-                    { message: 'Link saved', id: new_link }.to_json
+                    { message: 'Link saved', data: new_link }.to_json
                   else
                     routing.halt 400, { message: 'Could not save link' }
                   end
@@ -109,7 +109,7 @@ module StringofFate
               output = { data: Platform.all }
               JSON.pretty_generate(output)
             rescue StandardError
-              routing.halt 404, {message: 'Could not find platform'}.to_json
+              routing.halt 404, { message: 'Could not find platform' }.to_json
             end
 
             # POST api/v1/platforms
@@ -117,10 +117,10 @@ module StringofFate
               new_data = JSON.parse(routing.body.read)
               new_plat = Platform.new(new_data)
               raise 'Could not save platform' unless new_plat.save
-              
+
               response.status = 201
               response['Location'] = "#{@plat_root}/#{new_plat.id}"
-              { message: 'Platform saved', id: new_plat.id }.to_json
+              { message: 'Platform saved', data: new_plat }.to_json
             rescue StandardError => e
               routing.halt 400, { message: e.message }.to_json
             end

@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
 require 'rack/test'
+require_relative './spec_helper'
 
-require_relative '../app/controllers/app'
-require_relative '../app/models/userinfo'
-
-DATA = YAML.safe_load File.read('app/db/seeds/userinfo_seeds.yml')
+USRINFO = YAML.safe_load File.read('app/db/seeds/userinfo_seeds.yml')
 
 describe 'Test StringofFate Web API' do
   include Rack::Test::Methods
@@ -22,8 +20,8 @@ describe 'Test StringofFate Web API' do
 
   describe 'Handle userinfos' do
     it 'HAPPY: should be able to get list of all userinfos' do
-      StringofFate::Userinfo.new(DATA[0]).save
-      StringofFate::Userinfo.new(DATA[1]).save
+      StringofFate::Userinfo.new(USRINFO[0]).save
+      StringofFate::Userinfo.new(USRINFO[1]).save
 
       get 'api/v1/userinfos'
       result = JSON.parse last_response.body
@@ -31,7 +29,7 @@ describe 'Test StringofFate Web API' do
     end
 
     it 'HAPPY: should be able to get details of a single userinfo' do
-      StringofFate::Userinfo.new(DATA[1]).save
+      StringofFate::Userinfo.new(USRINFO[1]).save
       id = Dir.glob("#{StringofFate::STORE_DIR}/*.txt").first.split(%r{[/.]})[3]
 
       get "/api/v1/userinfos/#{id}"
@@ -49,7 +47,7 @@ describe 'Test StringofFate Web API' do
 
     it 'HAPPY: should be able to create new userinfos' do
       req_header = { 'CONTENT_TYPE' => 'application/json' }
-      post 'api/v1/userinfos', DATA[1].to_json, req_header
+      post 'api/v1/userinfos', USRINFO[1].to_json, req_header
 
       _(last_response.status).must_equal 201
     end

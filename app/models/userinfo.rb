@@ -21,7 +21,7 @@ module StringofFate
     # TODO: create attr_reader
     attr_reader :username, :id, :friends, :public_hashtags, :links
 
-    def to_json(options = {})
+    def to_json(options = {}) # rubocop:disable Metrics/MethodLength
       JSON(
         { # TODO: convert hash to json
           type: 'userinfo', # tell json from which class
