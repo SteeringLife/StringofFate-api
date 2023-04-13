@@ -37,7 +37,7 @@ puma
 
 ### Learn more
 <details>
-<summary>How we develop`</summary>
+<summary>How we develop</summary>
 
 - We use "dev" branch to manage conflict.
 

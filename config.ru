@@ -1,4 +1,6 @@
 # frozen_string_literal: true
 
-require './app/controllers/app'
-run StringofFate::Api.freeze.app
+require './require_app'
+require_app
+
+run Credence::Api.freeze.app
