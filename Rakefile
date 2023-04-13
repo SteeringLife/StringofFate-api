@@ -46,13 +46,12 @@ namespace :db do
     require 'sequel'
 
     Sequel.extension :migration
-    @app = Credence::Api
+    @app = StringofFate::Api
   end
 
   task :load_models do
     require_app('models')
   end
-
   desc 'Run migrations'
   task :migrate => [:load, :print_env] do
     puts 'Migrating database to latest'
@@ -61,7 +60,7 @@ namespace :db do
 
   desc 'Destroy data in database; maintain tables'
   task :delete => :load_models do
-    Credence::Project.dataset.destroy
+    StringofFate::Platform.dataset.destroy
   end
 
   desc 'Delete dev or test database file'
@@ -71,7 +70,7 @@ namespace :db do
       return
     end
 
-    db_filename = "app/db/store/#{Credence::Api.environment}.db"
+    db_filename = "app/db/store/#{StringofFate::Api.environment}.db"
     FileUtils.rm(db_filename)
     puts "Deleted #{db_filename}"
   end
