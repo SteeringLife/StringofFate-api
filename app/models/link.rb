@@ -18,7 +18,7 @@ module StringofFate
             type: 'link',
             attributes: {
               id:,
-              name:,
+              nickname:,
               url:,
             }
           },
