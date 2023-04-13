@@ -19,12 +19,10 @@ Install this API by cloning the *relevant branch* and installing required gems f
 bundle install
 ```
 
-## Test
-
-Run the test script:
+Setup development database once:
 
 ```shell
-ruby spec/api_spec.rb
+rake db:migrate
 ```
 
 ## Execute
@@ -35,6 +33,27 @@ Run this API using:
 puma
 ```
 
+## Test
+
+Setup test database once:
+
+```shell
+RACK_ENV=test rake db:migrate
+```
+
+Run the test specification script in `Rakefile`:
+
+```shell
+rake spec
+```
+
+## Release check
+
+Before submitting pull requests, please check if specs, style, and dependency audits pass:
+
+```shell
+rake release?
+```
 ### Learn more
 <details>
 <summary>How we develop</summary>
