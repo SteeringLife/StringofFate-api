@@ -9,7 +9,7 @@ Sequel.migration do
       foreign_key :platform_id, table: :platforms
 
       String :nickname
-      String :url, null: false
+      String :url, null: false, dedault: ''
 
       DateTime :created_at
       DateTime :updated_at

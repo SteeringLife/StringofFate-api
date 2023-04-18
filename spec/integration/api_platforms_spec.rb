@@ -39,6 +39,16 @@ describe 'Test Platform Handling' do
 
       _(last_response.status).must_equal 404
     end
+
+    it 'SECURITY: should prevent basic SQL injection targeting IDs' do
+      StringofFate::Platform.create(name: 'New Platform', category: 'New Category')
+      StringofFate::Platform.create(name: 'Newer Platform', category: 'Newer Category')
+      get 'api/v1/platforms/2%20or%20id%3E0'
+
+      # deliberately not reporting error -- don't give attacker information
+      _(last_response.status).must_equal 404
+      _(last_response.body['data']).must_be_nil
+    end
   end
 
   describe 'Creating New Platforms' do
