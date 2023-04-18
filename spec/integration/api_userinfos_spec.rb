@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rack/test'
-require_relative './spec_helper'
+require_relative '../spec_helper'
 
 USRINFO = YAML.safe_load File.read('app/db/seeds/userinfo_seeds.yml')
 
