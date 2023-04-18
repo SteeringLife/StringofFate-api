@@ -44,11 +44,11 @@ module StringofFate
             # POST api/v1/userinfos
             routing.post do
               new_data = JSON.parse(routing.body.read)
-              new_doc = Userinfo.new(new_data)
+              new_userinfo = Userinfo.new(new_data)
 
-              if new_doc.save
+              if new_userinfo.save
                 response.status = 201
-                { message: 'Userinfo saved', data: new_doc }.to_json
+                { message: 'Userinfo saved', data: new_userinfo }.to_json
               else
                 routing.halt 400, { message: 'Could not save userinfo' }.to_json
               end
