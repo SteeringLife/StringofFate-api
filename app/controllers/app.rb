@@ -39,6 +39,8 @@ module StringofFate
               response.status = 200
               output = { userinfo_ids: Userinfo.all }
               JSON.pretty_generate(output)
+            rescue StandardError
+              routing.halt 404, { message: 'Could not find userinfos' }.to_json
             end
 
             # POST api/v1/userinfos
@@ -59,7 +61,7 @@ module StringofFate
 
             routing.on String do |platform_id|
               routing.on 'links' do
-                @link_route = "#{@link_route}/#{platform_id}/links"
+                @link_route = "#{@plat_route}/#{platform_id}/links"
                 # GET api/v1/platforms/[platform_id]/links/[link_id]
                 routing.get String do |link_id|
                   link = Link.where(id: link_id, platform_id:).first
