@@ -3,24 +3,17 @@
 require 'roda'
 require 'json'
 
-require_relative '../models/userinfo'
-
 module StringofFate
   # Web controller for StringofFate API
   class Api < Roda
-    plugin :environments
     plugin :halt
 
-    configure do
-      Userinfo.setup
-    end
-
+    # rubocop:disable Metrics/BlockLength
     route do |routing|
       response['Content-Type'] = 'application/json'
 
       routing.root do
-        response.status = 200
-        { message: 'StringofFate API up at /api/v1' }.to_json
+        { message: 'StringofFate up at /api/v1' }.to_json
       end
 
       routing.on 'api' do
