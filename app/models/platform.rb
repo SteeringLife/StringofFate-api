@@ -10,6 +10,8 @@ module StringofFate
     plugin :association_dependencies, links: :destroy
 
     plugin :timestamps
+    plugin :whitelist_security
+    set_allowed_columns :name, :category
 
     # rubocop:disable Metrics/MethodLength
     def to_json(options = {})

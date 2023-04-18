@@ -9,6 +9,8 @@ module StringofFate
     many_to_one :platform
 
     plugin :timestamps
+    plugin :whitelist_security
+    set_allowed_columns :nickname, :url
 
     # rubocop:disable Metrics/MethodLength
     def to_json(options = {})

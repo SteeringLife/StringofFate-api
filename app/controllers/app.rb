@@ -83,17 +83,16 @@ module StringofFate
                   new_data = JSON.parse(routing.body.read)
                   plat = Platform.find(id: platform_id)
                   new_link = plat.add_link(new_data)
+                  raise 'Could not save link' unless new_link
 
-                  if new_link
-                    response.status = 201
-                    response['Location'] = "#{@link_route}/#{new_link.id}"
-                    { message: 'Link saved', data: new_link }.to_json
-                  else
-                    routing.halt 400, { message: 'Could not save link' }
-                  end
-
-                rescue StandardError
-                  routing.halt 500, { message: 'Database error' }.to_json
+                  response.status = 201
+                  response['Location'] = "#{@link_route}/#{new_link.id}"
+                  { message: 'Link saved', data: new_link }.to_json
+                rescue Sequel::MassAssignmentRestriction
+                  Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
+                  routing.halt 400, { message: 'Illegal Attributes' }.to_json
+                rescue StandardError => e
+                  routing.halt 500, { message: e.message }.to_json
                 end
               end
 
@@ -123,12 +122,17 @@ module StringofFate
               response.status = 201
               response['Location'] = "#{@plat_root}/#{new_plat.id}"
               { message: 'Platform saved', data: new_plat }.to_json
+            rescue Sequel::MassAssignmentRestriction
+            Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
+            routing.halt 400, { message: 'Illegal Attributes' }.to_json
             rescue StandardError => e
-              routing.halt 400, { message: e.message }.to_json
+              Api.logger.error "UNKOWN ERROR: #{e.message}"
+              routing.halt 500, { message: 'Unknown server error' }.to_json
             end
           end
         end
       end
+    # rubocop:enable Metrics/BlockLength
     end
   end
 end
