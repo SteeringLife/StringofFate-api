@@ -9,6 +9,25 @@ module StringofFate
     many_to_one :platform
 
     plugin :timestamps
+    plugin :whitelist_security
+    set_allowed_columns :nickname, :url
+
+    # Secure getters and setters
+    def nickname
+      SecureDB.decrypt(nickname_secure)
+    end
+
+    def nickname=(plaintext)
+      self.nickname_secure = SecureDB.encrypt(plaintext)
+    end
+
+    def url
+      SecureDB.decrypt(url_secure)
+    end
+
+    def url=(plaintext)
+      self.url_secure = SecureDB.encrypt(plaintext)
+    end
 
     # rubocop:disable Metrics/MethodLength
     def to_json(options = {})
