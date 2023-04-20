@@ -57,3 +57,18 @@ Before submitting pull requests, please check if specs, style, and dependency au
 ```shell
 rake release?
 ```
+
+<details>
+<summary> Develop and testing shortcut cheat   sheet</summary>
+&nbsp
+
+### DB drop and migrate again shortcut
+For DEV
+ ```shell
+rake db:rebuild 
+```
+For Test
+```shell
+RACK_ENV=test db:rebuild #
+``` 
+</details>

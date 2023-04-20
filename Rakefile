@@ -78,7 +78,7 @@ namespace :db do # rubocop:disable Metrics/BlockLength
   end
 
   desc 'Delete dev or test database file and remigrate'
-  task :rebuilt do
+  task :rebuild do
     sh 'rake db:drop'
     sh 'rake db:migrate'
   end

@@ -46,6 +46,17 @@ describe 'Test Link Handling' do
     _(last_response.status).must_equal 404
   end
 
+  it 'SECURITY: should prevent basic SQL injection targeting IDs' do
+    plat = StringofFate::Platform.first
+    plat.add_link(DATA[:links][0])
+    plat.add_link(DATA[:links][1])
+    get "/api/v1/platforms/#{plat.id}/links/2%20or%20id%3E0"
+
+    # deliberately not reporting error -- don't give attacker information
+    _(last_response.status).must_equal 404
+    _(last_response.body['data']).must_be_nil
+  end
+
   describe 'Creating Links' do
     before do
       @plat = StringofFate::Platform.first
