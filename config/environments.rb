@@ -4,6 +4,7 @@ require 'roda'
 require 'figaro'
 require 'logger'
 require 'sequel'
+require './app/lib/secure_db'
 
 module StringofFate
   # Configuration for the API
@@ -34,6 +35,8 @@ module StringofFate
       LOGGER = Logger.new($stderr)
       def self.logger = LOGGER
 
+      # Load crypto keys
+      SecureDB.setup(ENV.delete('DB_KEY'))
     end
     # rubocop:enable Lint/ConstantDefinitionInBlock
 

@@ -76,4 +76,19 @@ namespace :db do # rubocop:disable Metrics/BlockLength
     FileUtils.rm(db_filename)
     puts "Deleted #{db_filename}"
   end
+
+  desc 'Delete dev or test database file and remigrate'
+  task :rebuilt do
+    sh 'rake db:drop'
+    sh 'rake db:migrate'
+  end
 end
+
+namespace :newkey do
+  desc 'Create sample cryptographic key for database'
+  task :db do
+    require_app('lib')
+    puts "DB_KEY: #{SecureDB.generate_key}"
+  end
+end
+# rubocop:enable Style/HashSyntax, Style/SymbolArray

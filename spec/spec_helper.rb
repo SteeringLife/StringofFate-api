@@ -13,6 +13,6 @@ def wipe_database
   app.DB[:platforms].delete
 end
 
-DATA = {} # rubocop:disable Style/MutableConstant
+DATA = {} # a hash # rubocop:disable Style/MutableConstant
 DATA[:links] = YAML.safe_load File.read('app/db/seeds/link_seeds.yml')
 DATA[:platforms] = YAML.safe_load File.read('app/db/seeds/platform_seeds.yml')
