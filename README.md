@@ -58,17 +58,23 @@ Before submitting pull requests, please check if specs, style, and dependency au
 rake release?
 ```
 
+## Develop Shortcut
 <details>
-<summary> Develop and testing shortcut cheat   sheet</summary>
+<summary> Click for tips</summary>
 &nbsp
 
-### DB drop and migrate again shortcut
+## DB drop and migrate again shortcut
 For DEV
  ```shell
 rake db:rebuild 
 ```
 For Test
 ```shell
-RACK_ENV=test db:rebuild #
+RACK_ENV=test db:rebuild
+``` 
+
+## Test puma working using httpie
+```shell
+http -v GET http://0.0.0.0:9292/   
 ``` 
 </details>
