@@ -11,7 +11,7 @@ module StringofFate
     many_to_many :connections,
                  class: :'StringofFate::Account',
                  join_table: :connection,
-                 left_key: :addresser_id, right_key: :requester_id
+                 left_key: :requester_id, right_key: :addresser_id
 
     plugin :association_dependencies,
            owned_links: :destroy,
