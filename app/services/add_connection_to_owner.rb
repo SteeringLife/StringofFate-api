@@ -3,10 +3,10 @@
 module StringofFate
   # Add a connection to owner
   class AddConnectionToOwner
-    def self.call(addresser_username:, requester_username:)
-      addresser = Account.first(username: addresser_username)
-      requester = Account.first(username: requester_username)
-      requester.add_connection(addresser)
+    def self.call(receiver_username:, sender_username:)
+      receiver = Account.first(username: receiver_username)
+      sender = Account.first(username: sender_username)
+      sender.add_connection(receiver)
     end
   end
 end

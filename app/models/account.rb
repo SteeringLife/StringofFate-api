@@ -8,14 +8,19 @@ module StringofFate
   # Models a registered account
   class Account < Sequel::Model
     one_to_many :owned_links, class: :'StringofFate::Link', key: :owner_id
-    many_to_many :connections,
-                 class: :'StringofFate::Account',
-                 join_table: :connection,
-                 left_key: :requester_id, right_key: :addresser_id
+    many_to_many :connection_senders,
+                 class: self,
+                 join_table: :connections,
+                 left_key: :receiver_id, right_key: :sender_id
+    many_to_many :connection_receivers,
+                 class: self,
+                 join_table: :connections,
+                 left_key: :sender_id, right_key: :receiver_id
 
     plugin :association_dependencies,
            owned_links: :destroy,
-           connections: :nullify
+           connection_senders: :nullify,
+           connection_receivers: :nullify
 
     plugin :whitelist_security
     set_allowed_columns :username, :email, :password, :realname, :showname
@@ -24,6 +29,18 @@ module StringofFate
 
     def links
       owned_links
+    end
+
+    def connections
+      connection_senders + connection_receivers
+    end
+
+    def send_connections
+      connection_receivers
+    end
+
+    def received_connection
+      connection_senders
     end
 
     def password=(new_password)
