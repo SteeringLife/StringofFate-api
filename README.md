@@ -59,10 +59,17 @@ rake release?
 ```
 
 ## Develop Shortcut
+### Develop/Debug
+
+Add fake data to the development database to work on this project:
+
+```shell
+rake db:seed
+```
+
 <details>
 <summary> Click for tips</summary>
 &nbsp
-
 ## DB drop and migrate again shortcut
 For DEV
  ```shell
