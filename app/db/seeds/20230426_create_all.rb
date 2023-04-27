@@ -6,7 +6,7 @@ Sequel.seed(:development) do
     create_links
   end
 end
-  
+
 require 'yaml'
 DIR = File.dirname(__FILE__)
 LINK_INFO = YAML.load_file("#{DIR}/link_seeds.yml")
@@ -22,4 +22,3 @@ def create_links
     )
   end
 end
-  

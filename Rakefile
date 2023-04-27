@@ -62,7 +62,7 @@ namespace :db do
   desc 'Delete database'
   task :delete do
     app.DB[:links].delete
-    app.DB[:platforms].delete #should add hashtag later
+    app.DB[:platforms].delete # should add hashtag later
   end
 
   desc 'Delete dev or test database file'
