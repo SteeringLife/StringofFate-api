@@ -13,12 +13,12 @@ LINK_INFO = YAML.load_file("#{DIR}/link_seeds.yml")
 
 def create_links
   link_info_each = LINK_INFO.each
-  platform_cycle = StringofFate::Platform.all.cycle
+  account_cycle = StringofFate::Account.all.cycle
   loop do
     link_info = link_info_each.next
-    platform = platform_cycle.next
-    StringofFate::CreateLinkForPlatform.call(
-      platform_id: platform.id, link_data: link_info
+    account = account_cycle.next
+    StringofFate::CreateLinkForOwner.call(
+      account_id: account.id, link_data: link_info
     )
   end
 end
