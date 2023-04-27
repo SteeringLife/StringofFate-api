@@ -6,7 +6,8 @@ require 'sequel'
 module StringofFate
   # Models a secret document
   class Link < Sequel::Model
-    many_to_one :platform
+    many_to_one :owner, class: :'StringofFate::Account'
+    many_to_one :platform, class: :'StringofFate::Platform'
 
     plugin :timestamps
     plugin :whitelist_security

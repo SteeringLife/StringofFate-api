@@ -24,7 +24,8 @@ module StringofFate
               @link_root = "#{@api_root}/accounts/#{username}/links"
               # GET api/v1/accounts/[username]/links/[link_id]
               routing.get String do |link_id|
-                link = Link.where(username:, id: link_id).first
+                acct = Account.first(username:)
+                link = Link.where(owner_id: acct.id, id: link_id).first
                 link ? link.to_json : raise('Link not found')
               rescue StandardError => e
                 routing.halt 404, { message: e.message }.to_json
@@ -32,28 +33,26 @@ module StringofFate
 
               # GET api/v1/accounts/[username]/links
               routing.get do
-                output = { data: Account.first(username:).links }
+                output = { data: Account.first(username:).owned_links }
                 JSON.pretty_generate(output)
               rescue StandardError
-                routing.halt 404, message: 'Could not find link'
+                routing.halt 404, { message: 'Could not find link' }.to_json
               end
 
               # POST api/v1/accounts/[username]/links
-              routing.post do
-                new_data = JSON.parse(routing.body.read)
-                acct = Account.first(id: username)
-                new_link = acct.add_link(new_data)
-                raise 'Could not save link' unless new_link
-
-                response.status = 201
-                response['Location'] = "#{@link_root}/#{new_link_id}"
-                { message: 'Link saved', data: new_link }.to_json
-              rescue Sequel::MassAssignmentRestriction
-                Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
-                routing.halt 400, { message: 'Illegal Attributes' }.to_json
-              rescue StandardError => e
-                routing.halt 500, { message: e.message }.to_json
-              end
+              # routing.post do
+              #   new_data = JSON.parse(routing.body.read)
+              #   acct = Account.first(username:)
+              #   new_link = acct.add_owned_link(new_data)
+              #   response.status = 201
+              #   response['Location'] = "#{@link_root}/#{new_link_id}"
+              #   { message: 'Link saved', data: new_link }.to_json
+              # rescue Sequel::MassAssignmentRestriction
+              #   Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
+              #   routing.halt 400, { message: 'Illegal Attributes' }.to_json
+              # rescue StandardError => e
+              #   routing.halt 500, { message: e.message }.to_json
+              # end
             end
 
             # GET api/v1/accounts/[username]
@@ -82,6 +81,33 @@ module StringofFate
             response.status = 201
             response['Location'] = "#{@api_root}/accounts/#{new_acct.username}"
             { message: 'Account saved', data: new_acct }.to_json
+          rescue Sequel::MassAssignmentRestriction
+            Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
+            routing.halt 400, { message: 'Illegal Attributes' }.to_json
+          rescue StandardError => e
+            Api.logger.error "UNKOWN ERROR: #{e.message}"
+            routing.halt 500, { message: 'Unknown server error' }.to_json
+          end
+        end
+
+        routing.on 'platforms' do
+          # GET api/v1/platforms
+          routing.get do
+            output = { data: Platform.all }
+            JSON.pretty_generate(output)
+          rescue StandardError
+            routing.halt 404, { message: 'Could not find platform' }.to_json
+          end
+
+          # POST api/v1/platforms
+          routing.post do
+            new_data = JSON.parse(routing.body.read)
+            new_platform = StringofFate::CreateNewPlatform.call(platform_data: new_data)
+            raise 'Could not save platform' unless new_platform.save
+
+            response.status = 201
+            response['Location'] = "#{@api_root}/platforms/#{new_platform_id}"
+            { message: 'Platform saved', data: new_platform }.to_json
           rescue Sequel::MassAssignmentRestriction
             Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
             routing.halt 400, { message: 'Illegal Attributes' }.to_json
