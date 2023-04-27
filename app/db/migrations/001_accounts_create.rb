@@ -10,7 +10,6 @@ Sequel.migration do
       String :username, null: false, unique: true
       String :email, null: false, unique: true
       String :password_digest
-      String :email
       String :realname
       String :showname
       DateTime :created_at

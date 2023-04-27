@@ -9,16 +9,16 @@ module StringofFate
   class Account < Sequel::Model
     one_to_many :owned_links, class: :'StringofFate::Link', key: :owner_id
     many_to_many :connections,
-                 class: :'StringofFate::Account'
+                 class: :'StringofFate::Account',
                  join_table: :connection,
                  left_key: :addresser_id, right_key: :requester_id
 
     plugin :association_dependencies,
-           owned_links: :destroy
+           owned_links: :destroy,
            connections: :nullify
 
     plugin :whitelist_security
-    set_allowed_columns :username, :email, :password
+    set_allowed_columns :username, :email, :password, :realname, :showname
 
     plugin :timestamps, update_on_create: true
 

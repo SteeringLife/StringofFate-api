@@ -77,7 +77,7 @@ rake db:rebuild
 ```
 For Test
 ```shell
-RACK_ENV=test db:rebuild
+RACK_ENV=test rake db:rebuild
 ``` 
 
 ## Test puma working using httpie

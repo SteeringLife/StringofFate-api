@@ -7,6 +7,7 @@ Sequel.migration do
     create_table(:links) do
       primary_key :id
       foreign_key :platform_id, table: :platforms
+      foreign_key :owner_id, table: :accounts
 
       String :nickname_secure
       String :url_secure, null: false, dedault: ''
