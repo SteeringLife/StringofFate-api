@@ -13,7 +13,6 @@ describe 'Test Account Handling' do
     it 'HAPPY: should be able to get details of a single account' do
       account_data = DATA[:accounts][1]
       account = StringofFate::Account.create(account_data)
-
       get "/api/v1/accounts/#{account.username}"
       _(last_response.status).must_equal 200
 
