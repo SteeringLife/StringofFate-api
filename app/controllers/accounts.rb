@@ -22,18 +22,18 @@ module StringofFate
       # POST api/v1/accounts
       routing.post do
         new_data = JSON.parse(routing.body.read)
-        new_acct = Account.new(new_data)
-        raise 'Could not save account' unless new_acct.save
+        new_account = Account.new(new_data)
+        raise('Could not save account') unless new_account.save
 
         response.status = 201
-        response['Location'] = "#{@account_route}/#{new_acct.username}"
-        { message: 'Account saved', data: new_acct }.to_json
+        response['Location'] = "#{@account_route}/#{new_account.username}"
+        { message: 'Account saved', data: new_account }.to_json
       rescue Sequel::MassAssignmentRestriction
-        Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
-        routing.halt 400, { message: 'Illegal Attributes' }.to_json
+        Api.logger.warn "MASS-ASSIGNMENT:: #{new_data.keys}"
+        routing.halt 400, { message: 'Illegal Request' }.to_json
       rescue StandardError => e
-        Api.logger.error "UNKOWN ERROR: #{e.message}"
-        routing.halt 500, { message: 'Unknown server error' }.to_json
+        Api.logger.error 'Unknown error saving account'
+        routing.halt 500, { message: e.message }.to_json
       end
     end
   end
