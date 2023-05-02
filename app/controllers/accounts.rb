@@ -26,7 +26,7 @@ module StringofFate
         raise 'Could not save account' unless new_acct.save
 
         response.status = 201
-        response['Location'] = "#{@api_root}/accounts/#{new_acct.username}"
+        response['Location'] = "#{@account_route}/#{new_acct.username}"
         { message: 'Account saved', data: new_acct }.to_json
       rescue Sequel::MassAssignmentRestriction
         Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"

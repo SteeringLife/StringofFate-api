@@ -14,7 +14,7 @@ module StringofFate
           @link_route = "#{@api_root}/accounts/#{username}/links"
           # GET api/v1/accounts/[username]/links/[link_id]
           routing.get String do |link_id|
-            doc = Document.where(username: , id: link_id).first
+            doc = Document.where(username:, id: link_id).first
             doc ? doc.to_json : raise('Document not found')
           rescue StandardError => e
             routing.halt 404, { message: e.message }.to_json
