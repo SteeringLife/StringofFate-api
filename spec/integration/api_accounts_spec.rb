@@ -9,8 +9,7 @@ describe 'Test Account Handling' do
     @req_header = { 'CONTENT_TYPE' => 'application/json' }
     wipe_database
   end
-run pry
-
+  
   describe 'Account information' do
     it 'HAPPY: should be able to get details of a single account' do
       account_data = DATA[:accounts][0]

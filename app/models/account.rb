@@ -52,10 +52,10 @@ module StringofFate
       digest.correct?(try_password)
     end
 
-    def to_json(options = {})
+    def to_json(options = {}) # rubocop:disable Metrics/MethodLength
       JSON(
         {
-          type: 'account',          
+          type: 'account',
           attributes: {
             username:,
             email:,
