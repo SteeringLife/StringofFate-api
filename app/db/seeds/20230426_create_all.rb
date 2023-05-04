@@ -2,8 +2,11 @@
 
 Sequel.seed(:development) do
   def run
-    puts 'Seeding platforms, links'
-    create_links
+    puts 'Seeding accounts, platforms, links'
+    create_accounts
+    create_platforms
+    create_owned_links
+    add_connections
   end
 end
 
