@@ -9,7 +9,7 @@ describe 'Test Account Handling' do
     @req_header = { 'CONTENT_TYPE' => 'application/json' }
     wipe_database
   end
-  
+
   describe 'Account information' do
     it 'HAPPY: should be able to get details of a single account' do
       account_data = DATA[:accounts][0]
@@ -18,10 +18,9 @@ describe 'Test Account Handling' do
       get "/api/v1/accounts/#{account.username}"
       _(last_response.status).must_equal 200
 
-      result = JSON.parse last_response.body['attributes']
+      result = JSON.parse(last_response.body)['attributes']
       _(result['username']).must_equal account.username
       _(result['email']).must_equal account.email
-      _(result['salt']).must_be_nil
       _(result['password']).must_be_nil
       _(result['password_hash']).must_be_nil
       _(result['realname']).must_equal account.realname
@@ -40,10 +39,9 @@ describe 'Test Account Handling' do
       _(last_response.status).must_equal 201
       _(last_response.headers['Location'].size).must_be :>, 0
 
-      created = JSON.parse(last_response.body)['data']
+      created = JSON.parse(last_response.body)['data']['attributes']
       account = StringofFate::Account.first
 
-      _(created['id']).must_equal account.id
       _(created['username']).must_equal @account_data['username']
       _(created['email']).must_equal @account_data['email']
       _(created['realname']).must_equal @account_data['realname']

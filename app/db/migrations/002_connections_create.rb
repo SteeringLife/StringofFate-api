@@ -4,7 +4,7 @@ require 'sequel'
 
 Sequel.migration do
   change do
-    create_join_table(receiver_id: :accounts, sender_id: :accounts) do
+    create_join_table({ receiver_id: :accounts, sender_id: :accounts }, name: :connections) do
       Int :status, null: false, default: 0  # 0: request send , 1: approve, 2 banned
 
       DateTime :created_at
