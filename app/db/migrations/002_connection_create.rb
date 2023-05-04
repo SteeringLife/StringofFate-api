@@ -5,8 +5,10 @@ require 'sequel'
 Sequel.migration do
   change do
     create_join_table(receiver_id: :accounts, sender_id: :accounts) do
-      primary_key :id
-      Int :status, null: false, default: 0
+      Int :status, null: false, default: 0  # 0: request send , 1: approve, 2 banned
+
+      DateTime :created_at
+      DateTime :updated_at
     end
   end
 end

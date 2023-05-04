@@ -7,6 +7,8 @@ API to store and retrieve platform and link information of digital namecard of S
 All routes return Json
 
 - GET  `/`: Root route shows if Web API is running
+- GET  `api/v1/accounts/[username]`: Get account details
+- POST  `api/v1/accounts`: Create a new account
 - GET  `api/v1/platforms/[plat_id]/links/[link_id]`: Get a link
 - GET  `api/v1/platforms/[plat_id]/links`: Get list of links for platform
 - POST `api/v1/platforms/[ID]/links`: Upload link for a platform
@@ -49,6 +51,14 @@ Run the test specification script in `Rakefile`:
 ```shell
 rake spec
 ```
+## Execute
+
+Launch the API using:
+
+```shell
+rake run:dev
+```
+
 
 ## Release check
 

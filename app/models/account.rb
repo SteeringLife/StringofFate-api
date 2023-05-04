@@ -55,12 +55,13 @@ module StringofFate
     def to_json(options = {})
       JSON(
         {
-          type: 'account',
-          id:,
-          username:,
-          email:,
-          realname:,
-          showname:
+          type: 'account',          
+          attributes: {
+            username:,
+            email:,
+            realname:,
+            showname:
+          }
         }, options
       )
     end

@@ -6,18 +6,20 @@ describe 'Test Account Handling' do
   include Rack::Test::Methods
 
   before do
+    @req_header = { 'CONTENT_TYPE' => 'application/json' }
     wipe_database
   end
+run pry
 
   describe 'Account information' do
     it 'HAPPY: should be able to get details of a single account' do
       account_data = DATA[:accounts][0]
       account = StringofFate::Account.create(account_data)
+
       get "/api/v1/accounts/#{account.username}"
       _(last_response.status).must_equal 200
 
-      result = JSON.parse last_response.body
-      _(result['id']).must_equal account.id
+      result = JSON.parse last_response.body['attributes']
       _(result['username']).must_equal account.username
       _(result['email']).must_equal account.email
       _(result['salt']).must_be_nil
