@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
+ruby File.read('.ruby-version').strip
 
 # Web API
 gem 'json'
@@ -37,4 +38,8 @@ group :development, :test do
   gem 'rack-test'
   gem 'sequel-seed'
   gem 'sqlite3', '~>1.6'
+end
+
+group :production do
+  gem 'pg'
 end
