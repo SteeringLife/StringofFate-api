@@ -8,14 +8,8 @@ module StringofFate
   # Models a registered account
   class Account < Sequel::Model
     one_to_many :owned_links, class: :'StringofFate::Link', key: :owner_id
-    many_to_many :connection_senders,
-                 class: self,
-                 join_table: :connections,
-                 left_key: :receiver_id, right_key: :sender_id
-    many_to_many :connection_receivers,
-                 class: self,
-                 join_table: :connections,
-                 left_key: :sender_id, right_key: :receiver_id
+    one_to_many :connection_senders, class: :'StringofFate::Connection', key: :sender_id
+    one_to_many :connection_receivers, class: :'StringofFate::Connection', key: :receiver_id
 
     plugin :association_dependencies,
            owned_links: :destroy,

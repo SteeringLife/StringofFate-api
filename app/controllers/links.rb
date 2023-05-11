@@ -1,54 +1,46 @@
 # frozen_string_literal: true
-# # frozen_string_literal: true
 
-# require 'roda'
-# require_relative './app'
+require 'roda'
+require_relative './app'
 
-# module StringofFate
-#   # Web controller for String of Fate API
-#   class Api < Roda
-#     route('accounts') do |routing|
-#       @account_route = "#{@api_root}/accounts"
+module StringofFate
+  # Web controller for String of Fate API
+  class Api < Roda
+    route('links') do |routing| # rubocop:disable Metrics/BlockLength
+      @account_route = "#{@api_root}/links"
 
-#       routing.on String do |username|
-#         routing.on 'links' do
-#           @link_route = "#{@api_root}/accounts/#{username}/links"
-#           # GET api/v1/accounts/[username]/links/[link_id]
-#           routing.get String do |link_id|
-#             doc = Document.where(username:, id: link_id).first
-#             doc ? doc.to_json : raise('Document not found')
-#           rescue StandardError => e
-#             routing.halt 404, { message: e.message }.to_json
-#           end
+      routing.on String do |username|
+        routing.on 'links' do
+          @link_route = "#{@api_root}/links/#{username}"
+          # GET api/v1/links/[username]
+          routing.get do
+            output = { data: Account.first(id: username).owned_links }
+            JSON.pretty_generate(output)
+          rescue StandardError
+            routing.halt(404, { message: 'Could not find links' }.to_json)
+          end
 
-#           # GET api/v1/accounts/[username]/links
-#           routing.get do
-#             output = { data: Project.first(id: username).links }
-#             JSON.pretty_generate(output)
-#           rescue StandardError
-#             routing.halt(404, { message: 'Could not find links' }.to_json)
-#           end
+          # POST api/v1/links/[username]/[platform_name]
+          routing.post String do |platform_name|
+            new_data = JSON.parse(routing.body.read)
+            platform = Platform.first(name: platform_name)
+            owner = Account.first(id: username)
 
-#           # # POST api/v1/accounts/[username]/links
-#           # routing.post do
-#           #   new_data = JSON.parse(routing.body.read)
+            new_link = Link.new(new_data)
+            raise('Could not save link') unless new_link.save
 
-#           #   new_doc = CreateDocumentForProject.call(
-#           #     username: , document_data: new_data
-#           #   )
-
-#           #   response.status = 201
-#           #   response['Location'] = "#{@link_route}/#{new_doc.id}"
-#           #   { message: 'Document saved', data: new_doc }.to_json
-#           # rescue Sequel::MassAssignmentRestriction
-#           #   Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
-#           #   routing.halt 400, { message: 'Illegal Attributes' }.to_json
-#           # rescue StandardError => e
-#           #   Api.logger.warn "MASS-ASSIGNMENT: #{e.message}"
-#           #   routing.halt 500, { message: 'Error creating document' }.to_json
-#           # end
-#         end
-#       end
-#     end
-#   end
-# end
+            response.status = 201
+            response['Location'] = "#{@account_route}/#{username}/links/#{platform}"
+            { message: 'Account saved', data: new_account }.to_json
+          rescue Sequel::MassAssignmentRestriction
+            Api.logger.warn "MASS-ASSIGNMENT:: #{new_data.keys}"
+            routing.halt 400, { message: 'Illegal Request' }.to_json
+          rescue StandardError => e
+            Api.logger.error 'Unknown error saving account'
+            routing.halt 500, { message: e.message }.to_json
+          end
+        end
+      end
+    end
+  end
+end

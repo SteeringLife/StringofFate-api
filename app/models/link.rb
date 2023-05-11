@@ -43,6 +43,7 @@ module StringofFate
             }
           },
           included: {
+            owner:,
             platform:
           }
         }, options
