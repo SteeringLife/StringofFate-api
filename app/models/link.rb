@@ -41,6 +41,7 @@ module StringofFate
             url:
           },
           included: {
+            owner:,
             platform:
           }
         }, options
