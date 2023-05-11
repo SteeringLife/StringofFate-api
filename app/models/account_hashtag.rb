@@ -5,23 +5,24 @@ require 'sequel'
 
 module StringofFate
   # Models a platform
-  class Platform < Sequel::Model
-    one_to_many :links
-    plugin :association_dependencies, links: :destroy
+  class Hashtag < Sequel::Model
+    many_to_one :account
+    many_to_one :hashtag
 
     plugin :timestamps
     plugin :whitelist_security
-    set_allowed_columns :name, :category
+    set_allowed_columns :giver_id, :owner_id, :hashtag_id
 
     # rubocop:disable Metrics/MethodLength
     def to_json(options = {})
       JSON(
-        {
-          type: 'platform',
+      {
+          type: 'account_hashtag',
           attributes: {
             id:,
-            name:,
-            category:
+            giver_id:,
+            owner_id:,
+            hashtag_id:
           }
         }, options
       )

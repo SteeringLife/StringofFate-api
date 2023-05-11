@@ -34,13 +34,11 @@ module StringofFate
     def to_json(options = {})
       JSON(
         {
-          data: {
-            type: 'link',
-            attributes: {
-              id:,
-              nickname:,
-              url:
-            }
+          type: 'link',
+          attributes: {
+            id:,
+            nickname:,
+            url:
           },
           included: {
             owner:,
