@@ -1,5 +1,5 @@
 ---
-- nickname: ig_small
+- name: ig_small
   url: https://igigsmall
-- nickname: ig_big
+- name: ig_big
   url: https://igbig

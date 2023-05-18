@@ -22,10 +22,9 @@ module StringofFate
       self.content_secure = SecureDB.encrypt(plaintext)
     end
 
-    # rubocop:disable Metrics/MethodLength
     def to_json(options = {})
       JSON(
-      {
+        {
           type: 'hashtag',
           attributes: {
             id:,
@@ -34,6 +33,5 @@ module StringofFate
         }, options
       )
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end

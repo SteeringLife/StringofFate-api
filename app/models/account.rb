@@ -8,13 +8,13 @@ module StringofFate
   # Models a registered account
   class Account < Sequel::Model
     one_to_many :owned_links, class: :'StringofFate::Link', key: :owner_id
-    one_to_many :connection_senders, class: :'StringofFate::Connection', key: :sender_id
-    one_to_many :connection_receivers, class: :'StringofFate::Connection', key: :receiver_id
+    # one_to_many :connection_senders, class: :'StringofFate::Connection', key: :sender_id
+    # one_to_many :connection_receivers, class: :'StringofFate::Connection', key: :receiver_id
 
     plugin :association_dependencies,
-           owned_links: :destroy,
-           connection_senders: :nullify,
-           connection_receivers: :nullify
+           owned_links: :destroy
+    #      connection_senders: :nullify,
+    #      connection_receivers: :nullify
 
     plugin :whitelist_security
     set_allowed_columns :username, :email, :password, :realname, :showname

@@ -13,7 +13,6 @@ module StringofFate
     plugin :whitelist_security
     set_allowed_columns :name, :category
 
-    # rubocop:disable Metrics/MethodLength
     def to_json(options = {})
       JSON(
         {
@@ -26,6 +25,5 @@ module StringofFate
         }, options
       )
     end
-    # rubocop:enable Metrics/MethodLength
   end
 end
