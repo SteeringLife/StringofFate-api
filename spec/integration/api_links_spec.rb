@@ -44,8 +44,8 @@ describe 'Test Links Handling' do
 
     it 'HAPPY: should be able to get details of a single link' do
       existing_link = DATA[:links][1]
-      existing_link['included']['owner'] = DATA[:accounts][0]
-      existing_link['included']['platform'] = DATA[:platforms][0]
+      owner = StringofFate::Account.create(DATA[:accounts][0])
+      platform = StringofFate::Platform.create(DATA[:platforms][0])
       StringofFate::Link.create(existing_link)
       id = StringofFate::Link.first.id
 
