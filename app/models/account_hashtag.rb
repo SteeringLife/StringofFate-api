@@ -16,7 +16,7 @@ module StringofFate
     # rubocop:disable Metrics/MethodLength
     def to_json(options = {})
       JSON(
-      {
+        {
           type: 'account_hashtag',
           attributes: {
             id:,

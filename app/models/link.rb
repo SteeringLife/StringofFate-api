@@ -11,15 +11,15 @@ module StringofFate
 
     plugin :timestamps
     plugin :whitelist_security
-    set_allowed_columns :nickname, :url
+    set_allowed_columns :name, :url
 
     # Secure getters and setters
-    def nickname
-      SecureDB.decrypt(nickname_secure)
+    def name
+      SecureDB.decrypt(name_secure)
     end
 
-    def nickname=(plaintext)
-      self.nickname_secure = SecureDB.encrypt(plaintext)
+    def name=(plaintext)
+      self.name_secure = SecureDB.encrypt(plaintext)
     end
 
     def url
@@ -37,7 +37,7 @@ module StringofFate
           type: 'link',
           attributes: {
             id:,
-            nickname:,
+            name:,
             url:
           },
           included: {
