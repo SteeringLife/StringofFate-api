@@ -44,8 +44,6 @@ describe 'Test Links Handling' do
 
     it 'HAPPY: should be able to get details of a single link' do
       existing_link = DATA[:links][1]
-      owner = StringofFate::Account.create(DATA[:accounts][0])
-      platform = StringofFate::Platform.create(DATA[:platforms][0])
       StringofFate::Link.create(existing_link)
       id = StringofFate::Link.first.id
 
@@ -56,8 +54,7 @@ describe 'Test Links Handling' do
       _(result['attributes']['id']).must_equal id
       _(result['attributes']['name']).must_equal existing_link['name']
       _(result['attributes']['url']).must_equal existing_link['url']
-      _(result['included']['owner']['username']).must_equal existing_link['included']['owner']['username']
-      _(result['included']['platform']['name']).must_equal existing_link['included']['platform']['name']
+      _(result['attributes']['platform_id']).must_equal existing_link['platform_id']
     end
 
     it 'SAD: should return error if unknown link requested' do
