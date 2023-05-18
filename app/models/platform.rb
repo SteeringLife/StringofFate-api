@@ -17,13 +17,11 @@ module StringofFate
     def to_json(options = {})
       JSON(
         {
-          data: {
-            type: 'platform',
-            attributes: {
-              id:,
-              name:,
-              category:
-            }
+          type: 'platform',
+          attributes: {
+            id:,
+            name:,
+            category:
           }
         }, options
       )
