@@ -69,6 +69,7 @@ namespace :db do
   task :delete => :load do
     StringofFate::Account.dataset.destroy
   end
+
   desc 'Delete dev or test database file'
   task :drop => :load do
     if @app.environment == :production
@@ -79,12 +80,6 @@ namespace :db do
     db_filename = "app/db/store/#{StringofFate::Api.environment}.db"
     FileUtils.rm(db_filename)
     puts "Deleted #{db_filename}"
-  end
-
-  desc 'Delete dev or test database file and remigrate'
-  task :rebuild do
-    sh 'rake db:drop'
-    sh 'rake db:migrate'
   end
 
   task :reset_seeds => :load_models do
@@ -109,6 +104,12 @@ namespace :newkey do
   task :db do
     require_app('lib')
     puts "DB_KEY: #{SecureDB.generate_key}"
+  end
+
+  desc 'Create sample cryptographic key for tokens and messaging'
+  task :msg do
+    require_app('lib')
+    puts "MSG_KEY: #{AuthToken.generate_key}"
   end
 end
 
