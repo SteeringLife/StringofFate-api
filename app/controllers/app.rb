@@ -5,7 +5,7 @@ require 'json'
 require_relative './helpers'
 
 module StringofFate
-  # Web controller for Credence API
+  # Web controller for StringofFate API
   class Api < Roda
     plugin :halt
     plugin :all_verbs
