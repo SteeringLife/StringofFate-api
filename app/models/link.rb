@@ -38,7 +38,8 @@ module StringofFate
           attributes: {
             id:,
             name:,
-            url:
+            url:,
+            platform_id:
           },
           included: {
             owner:,

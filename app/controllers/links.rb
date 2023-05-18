@@ -7,7 +7,7 @@ module StringofFate
   # Web controller for String of Fate API
   class Api < Roda
     route('links') do |routing| # rubocop:disable Metrics/BlockLength
-      @account_route = "#{@api_root}/links"
+      @link_route = "#{@api_root}/links"
 
       routing.on String do |link_id|
         # GET api/v1/links/[link_id]
@@ -19,7 +19,7 @@ module StringofFate
         end
       end
 
-      routing.on 'links' do
+      routing.on 'links' do # rubocop:disable Metrics/BlockLength
         @link_route = "#{@api_root}/links/#{username}"
         # GET api/v1/links/
         routing.get do
@@ -30,17 +30,18 @@ module StringofFate
           routing.halt(404, { message: 'Could not find links' }.to_json)
         end
 
-        # POST api/v1/links/[platform_name]
-        routing.post String do |platform_name|
-          platform = Platform.first(name: platform_name)
+        # POST api/v1/links
+        routing.post do
           owner = Account.first(username: @auth_account['username'])
+          platform = Platform.first(name: 'IG')
           new_data = JSON.parse(routing.body.read)
-
-          new_link = Link.new(new_data, owner:, platform:)
-          raise('Could not save link') unless new_link.save
+          new_link = StringofFate::Link.new(new_data)
+          new_link.owner = owner
+          new_link.platform = platform
+          new_link.save
 
           response.status = 201
-          response['Location'] = "#{@account_route}/#{username}/links/#{platform}"
+          response['Location'] = "#{@link_route}/links/#{new_link.id}"
           { message: 'Account saved', data: new_account }.to_json
         rescue Sequel::MassAssignmentRestriction
           Api.logger.warn "MASS-ASSIGNMENT:: #{new_data.keys}"
