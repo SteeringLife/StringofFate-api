@@ -24,14 +24,15 @@ describe 'Test Platform Handling' do
     it 'HAPPY: should be able to get details of a single platform' do
       existing_platform = DATA[:platforms][1]
       StringofFate::Platform.create(existing_platform)
-      id = StringofFate::Platform.first.id
+      platform = StringofFate::Platform.first
 
-      get "/api/v1/platforms/#{id}"
+      get "/api/v1/platforms/#{platform.name}"
       _(last_response.status).must_equal 200
 
       result = JSON.parse last_response.body
-      _(result['data']['attributes']['id']).must_equal id
-      _(result['data']['attributes']['name']).must_equal existing_platform['name']
+      _(result['attributes']['id']).must_equal platform.id
+      _(result['attributes']['name']).must_equal platform.name
+      _(result['attributes']['category']).must_equal platform.category
     end
 
     it 'SAD: should return error if unknown platform requested' do
@@ -54,7 +55,7 @@ describe 'Test Platform Handling' do
   describe 'Creating New Platforms' do
     before do
       @req_header = { 'CONTENT_TYPE' => 'application/json' }
-      @platform_data = DATA[:platforms][1]
+      @platform_data = DATA[:platforms][0]
     end
 
     it 'HAPPY: should be able to create new platforms' do
@@ -62,7 +63,7 @@ describe 'Test Platform Handling' do
       _(last_response.status).must_equal 201
       _(last_response.headers['Location'].size).must_be :>, 0
 
-      created = JSON.parse(last_response.body)['data']['data']['attributes']
+      created = JSON.parse(last_response.body)['data']['attributes']
       plat = StringofFate::Platform.first
 
       _(created['id']).must_equal plat.id

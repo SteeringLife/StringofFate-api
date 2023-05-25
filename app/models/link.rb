@@ -6,7 +6,7 @@ require 'sequel'
 module StringofFate
   # Models a secret document
   class Link < Sequel::Model
-    many_to_one :owner, class: :'StringofFate::Account'
+    many_to_one :owner_card, class: :'StringofFate::Account'
     many_to_one :platform, class: :'StringofFate::Platform'
 
     plugin :timestamps
@@ -38,11 +38,10 @@ module StringofFate
           attributes: {
             id:,
             name:,
-            url:,
-            platform_id:
+            url:
           },
           included: {
-            owner:,
+            ocard:,
             platform:
           }
         }, options

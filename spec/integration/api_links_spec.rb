@@ -54,7 +54,6 @@ describe 'Test Links Handling' do
       _(result['attributes']['id']).must_equal id
       _(result['attributes']['name']).must_equal existing_link['name']
       _(result['attributes']['url']).must_equal existing_link['url']
-      _(result['attributes']['platform_id']).must_equal existing_link['platform_id']
     end
 
     it 'SAD: should return error if unknown link requested' do
@@ -78,11 +77,11 @@ describe 'Test Links Handling' do
     before do
       @req_header = { 'CONTENT_TYPE' => 'application/json' }
       @link_data = DATA[:links][1]
-      @platform_data = DATA[:platforms][0]
+      StringofFate::Platform.create(DATA[:platforms][0])
     end
 
     it 'HAPPY: should be able to create new links' do
-      post "api/v1/links/#{@platform_data['name']}", @link_data.to_json, @req_header
+      post 'api/v1/links', @link_data.to_json, @req_header
       _(last_response.status).must_equal 201
       _(last_response.headers['Location'].size).must_be :>, 0
 
