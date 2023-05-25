@@ -5,9 +5,8 @@ require 'sequel'
 
 module StringofFate
   # Models a platform
-  class Hashtag < Sequel::Model
+  class PublicHashtag < Sequel::Model
     one_to_many :account_hashtags
-    plugin :association_dependencies, account_hashtags: :destroy
 
     plugin :timestamps
     plugin :whitelist_security
@@ -25,7 +24,7 @@ module StringofFate
     def to_json(options = {})
       JSON(
         {
-          type: 'hashtag',
+          type: 'public_hashtag',
           attributes: {
             id:,
             content:
