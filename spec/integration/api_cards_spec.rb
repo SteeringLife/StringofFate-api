@@ -8,8 +8,8 @@ describe 'Test Link Handling' do
   before do
     wipe_database
 
-    DATA[:cards].each do |cardect_data|
-      StringofFate::Card.create(cardect_data)
+    DATA[:cards].each do |card_data|
+      StringofFate::Card.create(card_data)
     end
   end
 

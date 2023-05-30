@@ -1,6 +1,6 @@
 # StringofFate API
 
-API to store and retrieve platform and link information of digital namecard of String of Fate project.
+API to store and retrieve platform and link information of digital namecard of String of Fate cardect.
 
 ## Routes
 
@@ -71,7 +71,7 @@ rake release?
 ## Develop Shortcut
 ### Develop/Debug
 
-Add fake data to the development database to work on this project:
+Add fake data to the development database to work on this cardect:
 
 ```shell
 rake db:seed
@@ -83,15 +83,15 @@ rake db:seed
 ## DB drop and migrate again shortcut
 For DEV
  ```shell
-rake db:rebuild 
+rake db:rebuild
 ```
 For Test
 ```shell
 RACK_ENV=test rake db:rebuild
-``` 
+```
 
 ## Test puma working using httpie
 ```shell
-http -v GET http://0.0.0.0:9292/   
-``` 
+http -v GET http://0.0.0.0:9292/
+```
 </details>
