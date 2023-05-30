@@ -2,7 +2,7 @@
 
 require_relative '../spec_helper'
 
-describe 'Test AddCollaboratorToProject service' do
+describe 'Test AddCollaboratorToCard service' do
   before do
     wipe_database
 
