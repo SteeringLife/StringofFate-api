@@ -29,7 +29,9 @@ module StringofFate
             id:,
             content:
           }
-        }, options
+          include: {
+            card:
+          }, options
       )
     end
   end

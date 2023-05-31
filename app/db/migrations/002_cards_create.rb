@@ -4,11 +4,12 @@ require 'sequel'
 
 Sequel.migration do
   change do
-    create_table(:connections) do
+    create_table(:cards) do
       primary_key :id
-      foreign_key :sender_id, table: :accounts
-      foreign_key :reciever_id, table: :accounts
-      Int :status, null: false, default: 0
+      foreign_key :owner_id, table: :accounts
+
+      String :name, null: false
+      String :description
 
       DateTime :created_at
       DateTime :updated_at

@@ -32,17 +32,29 @@ module StringofFate
 
     plugin :timestamps, update_on_create: true
 
-    def to_json(options = {})
-      JSON(
-        {
-          type: 'card',
-          attributes: {
-            id:,
-            name:,
-            discrption:
-          }
-        }, options
+    def to_h
+      {
+        type: 'card',
+        attributes: {
+          id:,
+          name:,
+          description:
+        }
+      }
+    end
+
+    def full_details
+      to_h.merge(
+        relationships: {
+          owner:,
+          recievers:,
+          links:
+        }
       )
+    end
+
+    def to_json(options = {})
+      JSON(to_h, options)
     end
   end
 end
