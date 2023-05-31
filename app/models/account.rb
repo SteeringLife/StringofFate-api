@@ -14,10 +14,11 @@ module StringofFate
                  join_table: :cards_recievers,
                  left_key: :reciever_id, right_key: :card_id
 
-    one_to_many :owned_private_hashtags, class: :'StringofFate::PrivateHashtag', key: :owner_id
+    one_to_many :private_hashtags, class: :'StringofFate::PrivateHashtag', key: :owner_id
 
     plugin :association_dependencies,
-           owned_links: :destroy
+           owned_cards: :destroy,
+           recieved_cards: :nullify
 
     plugin :whitelist_security
     set_allowed_columns :username, :email, :password, :realname, :showname

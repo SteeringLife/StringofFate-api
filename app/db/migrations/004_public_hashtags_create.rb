@@ -4,8 +4,9 @@ require 'sequel'
 
 Sequel.migration do
   change do
-    create_table(:hashtags) do
+    create_table(:public_hashtags) do
       primary_key :id
+
       forign_key :card_id, table: :cards, null: false
 
       String :content_secure, unique: true, null: false
