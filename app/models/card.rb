@@ -24,8 +24,8 @@ module StringofFate
     one_to_many :private_hashtags
 
     plugin :association_dependencies,
-           owned_links: :destroy,
-           owned_public_hashtags: :nullify
+           links: :destroy,
+           public_hashtags: :nullify
 
     plugin :whitelist_security
     set_allowed_columns :name, :discrption

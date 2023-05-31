@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/MethodLength
 # frozen_string_literal: true
 
 require 'json'
@@ -28,11 +29,14 @@ module StringofFate
           attributes: {
             id:,
             content:
-          }
+          },
           include: {
             card:
-          }, options
+          }
+        }, options
       )
     end
   end
 end
+
+# rubocop:enable Metrics/MethodLength
