@@ -11,7 +11,7 @@ module StringofFate
 
     many_to_many :recieved_cards,
                  class: :'StringofFate::Card',
-                 join_table: :cards_recievers,
+                 join_table: :accounts_cards,
                  left_key: :reciever_id, right_key: :card_id
 
     one_to_many :private_hashtags, class: :'StringofFate::PrivateHashtag', key: :owner_id

@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/BlockLength
 # frozen_string_literal: true
 
 require_relative '../spec_helper'
@@ -21,8 +22,9 @@ describe 'Test GiveCardToReciever service' do
 
   it 'HAPPY: should be able to give a card to a reciever' do
     StringofFate::GiveCardToReciever.call(
-      email: @reciever.email,
-      card_id: @card.id
+      owner: @owner,
+      card: @card,
+      reciever_email: @reciever.email
     )
 
     _(@reciever.cards.count).must_equal 1
@@ -32,9 +34,12 @@ describe 'Test GiveCardToReciever service' do
   it 'BAD: should not give card to owner' do
     _(proc {
       StringofFate::GiveCardToReciever.call(
-        email: @owner.email,
-        card_id: @card.id
+        owner: @owner,
+        card: @card,
+        reciever_email: @owner.email
       )
-    }).must_raise StringofFate::GiveCardToReciever::OwnerNotRecieverError
+    }).must_raise StringofFate::GiveCardToReciever::ForbiddenError
   end
 end
+
+# rubocop:enable Metrics/BlockLength
