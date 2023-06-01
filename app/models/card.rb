@@ -9,7 +9,7 @@ module StringofFate
   class Card < Sequel::Model
     many_to_one :owner, class: :'StringofFate::Account'
 
-    many_to_many :reciever,
+    many_to_many :recievers,
                  class: :'StringofFate::Account',
                  join_table: :accounts_cards,
                  left_key: :card_id, right_key: :reciever_id
@@ -25,6 +25,7 @@ module StringofFate
 
     plugin :association_dependencies,
            links: :destroy,
+           recievers: :nullify,
            public_hashtags: :nullify
 
     plugin :whitelist_security

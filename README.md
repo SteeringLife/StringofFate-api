@@ -80,12 +80,15 @@ rake db:seed
 <details>
 <summary> Click for tips</summary>
 &nbsp
+
 ## DB drop and migrate again shortcut
-For DEV
+
+### For DEV
  ```shell
 rake db:rebuild
 ```
-For Test
+
+### For Test
 ```shell
 RACK_ENV=test rake db:rebuild
 ```
