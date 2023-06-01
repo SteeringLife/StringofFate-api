@@ -18,7 +18,7 @@ module StringofFate
     private
 
     def target_is_reciever?
-      @card.reciever.include?(reciever_account)
+      @card.recievers.include?(@reciever_account)
     end
   end
 end

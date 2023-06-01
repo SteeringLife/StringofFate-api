@@ -95,6 +95,12 @@ namespace :db do
     Sequel::Seeder.apply(@app.DB, 'app/db/seeds')
   end
 
+  desc 'Delete dev or test database file and remigrate'
+  task :rebuild do
+    sh 'rake db:drop'
+    sh 'rake db:migrate'
+  end
+
   desc 'Delete all data and reseed'
   task reseed: [:reset_seeds, :seed]
 end

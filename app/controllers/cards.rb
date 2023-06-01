@@ -1,4 +1,4 @@
-# rubocop:disable Metrics/ClassLength, Metrics/BlockLength
+# rubocop:disable Metrics/BlockLength
 # frozen_string_literal: true
 
 require_relative './app'
@@ -111,7 +111,6 @@ module StringofFate
         # GET api/v1/cards
         routing.get do
           cards = CardPolicy::AccountScope.new(@auth_account).viewable
-          run pry
           JSON.pretty_generate(data: cards)
         rescue StandardError
           routing.halt 403, { message: 'Could not find any cards' }.to_json

@@ -1,22 +1,22 @@
 # frozen_string_literal: true
 
 # Policy to determine if account can view a card
-class DocumentPolicy
-  def initialize(account, document)
+class LinkPolicy
+  def initialize(account, link)
     @account = account
-    @document = document
+    @link = link
   end
 
   def can_view?
-    account_owns_project? || account_collaborates_on_project?
+    account_owns_card? || account_recieves_card?
   end
 
   def can_edit?
-    account_owns_project? || account_collaborates_on_project?
+    account_owns_card?
   end
 
   def can_delete?
-    account_owns_project? || account_collaborates_on_project?
+    account_owns_card?
   end
 
   def summary
@@ -29,11 +29,11 @@ class DocumentPolicy
 
   private
 
-  def account_owns_project?
-    @document.card.owner == @account
+  def account_owns_card?
+    @link.card.owner == @account
   end
 
-  def account_collaborates_on_project?
-    @document.card.recievers.include?(@account)
+  def account_recieves_card?
+    @link.card.recievers.include?(@account)
   end
 end
