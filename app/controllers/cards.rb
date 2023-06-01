@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength, Metrics/BlockLength
 # frozen_string_literal: true
 
 require_relative './app'
@@ -5,16 +6,18 @@ require_relative './app'
 module StringofFate
   # Web controller for StringofFate API
   class Api < Roda
-    route('cards') do |routing| # rubocop:disable Metrics/BlockLength
-      routing.halt(403, UNAUTH_MSG) unless @auth_account
+    route('cards') do |routing|
+      unauthorized_message = { message: 'Unauthorized Request' }.to_json
+      routing.halt(403, unauthorized_message) unless @auth_account
 
       @card_route = "#{@api_root}/cards"
-      routing.on String do |card_id| # rubocop:disable Metrics/BlockLength
+      routing.on String do |card_id|
         @req_card = Card.first(id: card_id)
-
         # GET api/v1/cards/[ID]
         routing.get do
-          card = GetCardQuery.call(auth: @auth, card: @req_card)
+          card = GetCardQuery.call(
+            account: @auth_account, card: @req_card
+          )
 
           { data: card }.to_json
         rescue GetCardQuery::ForbiddenError => e
@@ -32,18 +35,37 @@ module StringofFate
             new_link = CreateLink.call(
               auth: @auth,
               card: @req_card,
-              document_data: JSON.parse(routing.body.read)
+              link_data: JSON.parse(routing.body.read)
             )
 
             response.status = 201
             response['Location'] = "#{@link_route}/#{new_link.id}"
-            { message: 'Document saved', data: new_link }.to_json
+            { message: 'Link saved', data: new_link }.to_json
           rescue CreateLink::ForbiddenError => e
             routing.halt 403, { message: e.message }.to_json
           rescue CreateLink::IllegalRequestError => e
             routing.halt 400, { message: e.message }.to_json
           rescue StandardError => e
-            Api.logger.warn "Could not create document: #{e.message}"
+            Api.logger.warn "Could not create link: #{e.message}"
+            routing.halt 500, { message: 'API server error' }.to_json
+          end
+        end
+
+        routing.on('recievers') do
+          # PUT api/v1/cards/[card_id]/recievers
+          routing.put do
+            req_data = JSON.parse(routing.body.read)
+
+            reciever = GiveCardToReciever.call(
+              account: @auth_account,
+              card: @req_card,
+              reciever_email: req_data['email']
+            )
+
+            { data: reciever }.to_json
+          rescue GiveCardToReciever::ForbiddenError => e
+            routing.halt 403, { message: e.message }.to_json
+          rescue StandardError
             routing.halt 500, { message: 'API server error' }.to_json
           end
         end
@@ -83,32 +105,13 @@ module StringofFate
             routing.halt 500, { message: 'API server error' }.to_json
           end
         end
-
-        routing.on('recievers') do
-          # PUT api/v1/cards/[card_id]/recievers
-          routing.put do
-            req_data = JSON.parse(routing.body.read)
-
-            reciever = GiveCardToReciever.call(
-              auth: @auth,
-              card: @req_card,
-              reciever_email: req_data['email']
-            )
-
-            { data: reciever }.to_json
-          rescue GiveCardToReciever::ForbiddenError => e
-            routing.halt 403, { message: e.message }.to_json
-          rescue StandardError
-            routing.halt 500, { message: 'API server error' }.to_json
-          end
-        end
       end
 
       routing.is do
         # GET api/v1/cards
         routing.get do
           cards = CardPolicy::AccountScope.new(@auth_account).viewable
-
+          run pry
           JSON.pretty_generate(data: cards)
         rescue StandardError
           routing.halt 403, { message: 'Could not find any cards' }.to_json
@@ -117,10 +120,7 @@ module StringofFate
         # POST api/v1/cards
         routing.post do
           new_data = JSON.parse(routing.body.read)
-
-          new_card = CreateCardForOwner.call(
-            auth: @auth, card_data: new_data
-          )
+          new_card = @auth_account.add_owned_card(new_data)
 
           response.status = 201
           response['Location'] = "#{@card_route}/#{new_card.id}"
@@ -128,9 +128,7 @@ module StringofFate
         rescue Sequel::MassAssignmentRestriction
           Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
           routing.halt 400, { message: 'Illegal Request' }.to_json
-        rescue CreateCardForOwner::ForbiddenError => e
-          routing.halt 403, { message: e.message }.to_json
-        rescue StandardError
+        rescue StandardError => e
           Api.logger.error "Unknown error: #{e.message}"
           routing.halt 500, { message: 'API server error' }.to_json
         end
@@ -138,3 +136,5 @@ module StringofFate
     end
   end
 end
+
+# rubocop:enable Metrics/ClassLength, Metrics/BlockLength

@@ -1,5 +1,7 @@
 ---
 - name: David Lin
   description: Card for NTHU
+- name: David Lin
+  description: Card for DLab
 - name: PeiYu Qiu
   description: Card for SERVSEC

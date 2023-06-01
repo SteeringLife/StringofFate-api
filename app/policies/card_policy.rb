@@ -37,6 +37,10 @@ module StringofFate
       account_is_owner?
     end
 
+    def can_give?
+      !(account_is_owner? || account_is_reciever?)
+    end
+
     def summary
       {
         can_view: can_view?,
@@ -45,7 +49,8 @@ module StringofFate
         can_discard: can_discard?,
         can_add_links: can_add_links?,
         can_remove_links: can_remove_links?,
-        can_give_card_to_reciever: can_give_card_to_reciever?
+        can_give_card_to_reciever: can_give_card_to_reciever?,
+        can_give: can_give?
       }
     end
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module StringofFate
-  # Add a collaborator to another owner's existing project
+  # Add a public hashtag to a card
   class RemovePublicHashtag
     # Error for owner cannot be collaborator
     class ForbiddenError < StandardError

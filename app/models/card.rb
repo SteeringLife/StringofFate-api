@@ -11,7 +11,7 @@ module StringofFate
 
     many_to_many :reciever,
                  class: :'StringofFate::Account',
-                 join_table: :cards_recievers,
+                 join_table: :accounts_cards,
                  left_key: :card_id, right_key: :reciever_id
 
     one_to_many :links
@@ -28,7 +28,7 @@ module StringofFate
            public_hashtags: :nullify
 
     plugin :whitelist_security
-    set_allowed_columns :name, :discrption
+    set_allowed_columns :name, :description
 
     plugin :timestamps, update_on_create: true
 

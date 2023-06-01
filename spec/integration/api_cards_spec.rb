@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/BlockLength
 # frozen_string_literal: true
 
 require_relative '../spec_helper'
@@ -24,7 +25,7 @@ describe 'Test Card Handling' do
         @account.add_owned_card(DATA[:cards][1])
       end
 
-      it 'HAPPY: should get list for authorized account' do
+      it 'HAPPY: should get cards list for authorized account' do
         header 'AUTHORIZATION', auth_header(@account_data)
         get 'api/v1/cards'
         _(last_response.status).must_equal 200
@@ -128,3 +129,5 @@ describe 'Test Card Handling' do
     end
   end
 end
+
+# rubocop:enable Metrics/BlockLength
