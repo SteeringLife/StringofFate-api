@@ -8,15 +8,15 @@ class LinkPolicy
   end
 
   def can_view?
-    account_owns_link? || account_recieved_the_card?
+    account_owns_card? || account_recieved_the_card?
   end
 
   def can_edit?
-    account_owns_link?
+    account_owns_card?
   end
 
   def can_delete?
-    account_owns_link?
+    account_owns_card?
   end
 
   def summary
@@ -29,7 +29,7 @@ class LinkPolicy
 
   private
 
-  def account_owns_link?
+  def account_owns_card?
     @link.card.owner == @account
   end
 

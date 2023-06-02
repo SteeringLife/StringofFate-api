@@ -6,7 +6,7 @@ require 'sequel'
 module StringofFate
   # Models a secret link
   class Link < Sequel::Model
-    many_to_one :card, class: :'StringofFate::Account'
+    many_to_one :card, class: :'StringofFate::Card'
     many_to_one :platform, class: :'StringofFate::Platform'
 
     plugin :timestamps

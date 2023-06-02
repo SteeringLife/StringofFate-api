@@ -71,7 +71,7 @@ describe 'Test Link Handling' do
     end
   end
 
-  describe 'Creating Documents' do
+  describe 'Creating Links' do
     before do
       @card = StringofFate::Card.first
       @link_data = DATA[:links][1]
