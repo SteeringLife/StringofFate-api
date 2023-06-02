@@ -33,7 +33,7 @@ module StringofFate
           # POST api/v1/cards/[card_id]/links
           routing.post do
             new_link = CreateLink.call(
-              auth: @auth,
+              account: @auth_account,
               card: @req_card,
               link_data: JSON.parse(routing.body.read)
             )
@@ -46,6 +46,7 @@ module StringofFate
           rescue CreateLink::IllegalRequestError => e
             routing.halt 400, { message: e.message }.to_json
           rescue StandardError => e
+            puts "CREATE LINK ERROR: #{e.inspect}"
             Api.logger.warn "Could not create link: #{e.message}"
             routing.halt 500, { message: 'API server error' }.to_json
           end

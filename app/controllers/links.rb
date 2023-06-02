@@ -12,7 +12,7 @@ module StringofFate
 
       # GET api/v1/links/[link_id]
       routing.on String do |link_id|
-        @req_link = Document.first(id: link_id)
+        @req_link = Link.first(id: link_id)
 
         routing.get do
           link = GetLinkQuery.call(
