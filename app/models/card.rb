@@ -33,6 +33,23 @@ module StringofFate
 
     plugin :timestamps, update_on_create: true
 
+    # Secure getters and setters
+    def name
+      SecureDB.decrypt(name_secure)
+    end
+
+    def name=(plaintext)
+      self.name_secure = SecureDB.encrypt(plaintext)
+    end
+
+    def description
+      SecureDB.decrypt(description_secure)
+    end
+
+    def description=(plaintext)
+      self.description_secure = SecureDB.encrypt(plaintext)
+    end
+
     def to_h
       {
         type: 'card',

@@ -8,8 +8,8 @@ Sequel.migration do
       primary_key :id
       foreign_key :owner_id, table: :accounts
 
-      String :name, null: false
-      String :description
+      String :name_secure, null: false
+      String :description_secure
 
       DateTime :created_at
       DateTime :updated_at
