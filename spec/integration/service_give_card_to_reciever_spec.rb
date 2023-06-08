@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/BlockLength
 # frozen_string_literal: true
 
 require_relative '../spec_helper'
@@ -40,3 +41,5 @@ describe 'Test GiveCardToReciever service' do
     }).must_raise StringofFate::GiveCardToReciever::ForbiddenError
   end
 end
+
+# rubocop:enable Metrics/BlockLength

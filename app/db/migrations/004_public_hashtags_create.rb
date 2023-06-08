@@ -7,8 +7,6 @@ Sequel.migration do
     create_table(:public_hashtags) do
       primary_key :id
 
-      forign_key :card_id, table: :cards, null: false
-
       String :content_secure, unique: true, null: false
 
       DateTime :created_at
