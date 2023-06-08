@@ -28,5 +28,6 @@ DATA = {
   accounts: YAML.safe_load(File.read('app/db/seeds/accounts_seed.yml')),
   links: YAML.safe_load(File.read('app/db/seeds/links_seed.yml')),
   platforms: YAML.safe_load(File.read('app/db/seeds/platforms_seed.yml')),
-  cards: YAML.safe_load(File.read('app/db/seeds/cards_seed.yml'))
+  cards: YAML.safe_load(File.read('app/db/seeds/cards_seed.yml')),
+  public_hashtags: YAML.safe_load(File.read('app/db/seeds/public_hashtags_seed.yml'))
 }.freeze

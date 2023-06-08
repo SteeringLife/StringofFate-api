@@ -2,38 +2,24 @@
 
 # Policy to determine if account can view a hashtag
 class PublicHashtagPolicy
-  def initialize(account, card)
+  def initialize(account, public_hashtag)
     @account = account
-    @card = card
+    @public_hashtag = public_hashtag
   end
 
-  def can_add?
-    account_owns_card?
-  end
-
-  def can_view?
-    account_owns_card? || account_recieve_this_card?
-  end
-
-  def can_delete?
-    account_owns_card?
+  def can_create?
+    !tag_alreay_exist?
   end
 
   def summary
     {
-      can_add: can_add?,
-      can_view: can_view?,
-      can_delete: can_delete?
+      can_create: can_create?
     }
   end
 
   private
 
-  def account_owns_card?
-    @card.owner == @account
-  end
-
-  def account_recieve_this_card?
-    @card.recievers.include?(@account)
+  def tag_alreay_exist?
+    StringofFate::PublicHashtag.first(content: @public_hashtag.content)
   end
 end

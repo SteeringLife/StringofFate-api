@@ -49,7 +49,8 @@ module StringofFate
         relationships: {
           owner:,
           recievers:,
-          links:
+          links:,
+          public_hashtags:,
         }
       )
     end
