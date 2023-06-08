@@ -13,8 +13,6 @@ describe 'Test PublicHashtag Handling' do
     @wrong_account_data = DATA[:accounts][1]
 
     @account = StringofFate::Account.create(@account_data)
-    @account.add_owned_card(DATA[:cards][0])
-    @account.add_owned_card(DATA[:cards][1])
     StringofFate::Account.create(@wrong_account_data)
 
     header 'CONTENT_TYPE', 'application/json'

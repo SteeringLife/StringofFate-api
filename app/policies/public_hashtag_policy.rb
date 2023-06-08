@@ -2,9 +2,8 @@
 
 # Policy to determine if account can view a hashtag
 class PublicHashtagPolicy
-  def initialize(account, public_hashtag)
-    @account = account
-    @public_hashtag = public_hashtag
+  def initialize(public_hashtag_data)
+    @public_hashtag_data = public_hashtag_data
   end
 
   def can_create?
@@ -20,6 +19,7 @@ class PublicHashtagPolicy
   private
 
   def tag_alreay_exist?
-    StringofFate::PublicHashtag.first(content: @public_hashtag.content)
+    puts StringofFate::PublicHashtag.all
+    #(content: @public_hashtag_data['content'])
   end
 end

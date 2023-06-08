@@ -13,7 +13,7 @@ module StringofFate
         # GET api/v1/public_hashtags
         routing.get do
           all_public_hashtags = PublicHashtag.all
-          all_public_hashtags.map(&:to_json)
+          JSON.pretty_generate(all_public_hashtags)
         rescue StandardError => e
           puts "GET PUBLIC HASHTAGS ERROR: #{e.inspect}"
           routing.halt 403, { message: 'Could not find any public hashtags' }.to_json
@@ -21,10 +21,9 @@ module StringofFate
 
         # POST api/v1/public_hashtags
         routing.post do
+          public_hashtag_data = JSON.parse(routing.body.read)
           new_tag = CreatePublicHashtag.call(
-            account: @current_account,
-            card: @current_card,
-            public_hashtag_data: JSON.parse(routing.body.read)
+            public_hashtag_data:
           )
 
           response.status = 201
@@ -35,7 +34,6 @@ module StringofFate
         rescue CreatePublicHashtag::IllegalRequestError => e
           routing.halt 400, { message: e.message }.to_json
         rescue StandardError => e
-          puts "CREATE PUBLIC HASHTAG ERROR: #{e.inspect}"
           Api.logger.error "Failed to create public hashtag: #{e.inspect}"
           routing.halt 500, { message: e.message }.to_json
         end
