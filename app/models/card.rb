@@ -50,7 +50,7 @@ module StringofFate
           owner:,
           recievers:,
           links:,
-          public_hashtags:,
+          public_hashtags:
         }
       )
     end
