@@ -26,7 +26,8 @@ module StringofFate
     plugin :association_dependencies,
            links: :destroy,
            recievers: :nullify,
-           public_hashtags: :nullify
+           public_hashtags: :nullify,
+           private_hashtags: :destroy
 
     plugin :whitelist_security
     set_allowed_columns :name, :description

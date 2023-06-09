@@ -10,7 +10,7 @@ Sequel.migration do
       forign_key :card_id, table: :cards, null: false
       forign_key :owner_id, table: :accounts, null: false
 
-      String :content_secure, unique: true, null: false
+      String :content_secure, null: false
 
       DateTime :created_at
       DateTime :updated_at

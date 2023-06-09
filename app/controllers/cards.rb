@@ -106,6 +106,29 @@ module StringofFate
             routing.halt 500, { message: 'API server error' }.to_json
           end
         end
+
+        routing.on('private_hashtags') do
+          # POST api/v1/cards/[card_id]/private_hashtags
+          routing.post do
+            created = CreatePrivateHashtagToCardForOwner.call(
+              owner_id: @auth_account.id,
+              card_id: @req_card.id,
+              private_hashtag_data: JSON.parse(routing.body.read)
+            )
+
+            response.status = 201
+            response['Location'] = "#{@private_hashtag_route}/#{created[:id]}"
+            { message: 'Private Hashtag saved', data: created }.to_json
+          rescue CreatePrivateHashtagToCardForOwner::IllegalRequestError => e
+            routing.halt 400, { message: e.message }.to_json
+          rescue CreatePrivateHashtagToCardForOwner::ForbiddenError => e
+            routing.halt 403, { message: e.message }.to_json
+          rescue StandardError => e
+            puts "CREATE PRIVATE HASHTAG ERROR: #{e.inspect}"
+            Api.logger.warn "Could not create private hashtag: #{e.message}"
+            routing.halt 500, { message: 'API server error' }.to_json
+          end
+        end
       end
 
       routing.is do
