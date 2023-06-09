@@ -13,6 +13,7 @@ def wipe_database
   StringofFate::Link.map(&:destroy)
   StringofFate::Card.map(&:destroy)
   StringofFate::Account.map(&:destroy)
+  StringofFate::PublicHashtag.map(&:destroy)
 end
 
 def auth_header(account_data)

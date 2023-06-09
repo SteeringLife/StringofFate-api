@@ -30,5 +30,3 @@ Style/SymbolArray:
   Exclude:
     # - Rakefile
     - app/db/migrations/*.rb
-Metrics/ClassLength:
-  Enabled: false

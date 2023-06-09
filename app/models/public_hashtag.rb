@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/MethodLength
 # frozen_string_literal: true
 
 require 'json'
@@ -7,7 +6,10 @@ require 'sequel'
 module StringofFate
   # Models a platform
   class PublicHashtag < Sequel::Model
-    one_to_many :account_hashtags
+    many_to_many :cards,
+                 class: :'StringofFate::Card',
+                 join_table: :cards_public_hashtags,
+                 left_key: :public_hashtag_id, right_key: :card_id
 
     plugin :timestamps
     plugin :whitelist_security
@@ -29,9 +31,6 @@ module StringofFate
           attributes: {
             id:,
             content:
-          },
-          include: {
-            card:
           }
         }, options
       )

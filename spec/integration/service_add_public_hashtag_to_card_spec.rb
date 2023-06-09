@@ -32,13 +32,18 @@ describe 'Test adding public hashtag to card' do
   end
 
   it 'BAD: should not add public hashtag to card if already exist' do
+    StringofFate::AddPublicHashtag.call(
+      account: @owner,
+      card: @card,
+      public_hashtag_id: @public_hashtag.id
+    )
     _(proc {
       StringofFate::AddPublicHashtag.call(
         account: @owner,
         card: @card,
         public_hashtag_id: @public_hashtag.id
       )
-    }).must_raise StringofFate::AddPublicHashtag::AlreadyExistError
+    }).must_raise StringofFate::AddPublicHashtag::ForbiddenError
   end
 end
 
