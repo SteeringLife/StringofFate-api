@@ -9,7 +9,7 @@ class AddPublicHashtagPolicy
   end
 
   def can_add?
-    account_owns_card? || !tag_already_exist_on_the_card?
+    account_owns_card? and !tag_already_exist_on_the_card?
   end
 
   def can_view?

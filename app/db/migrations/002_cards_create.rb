@@ -9,7 +9,7 @@ Sequel.migration do
       foreign_key :owner_id, table: :accounts
 
       String :name_secure, null: false
-      String :description_secure
+      String :description_secure, null: false, default: ''
 
       DateTime :created_at
       DateTime :updated_at

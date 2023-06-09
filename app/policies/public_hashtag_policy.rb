@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Policy to determine if account can view a hashtag
+# Policy to determine if account can create a public hashtag
 class PublicHashtagPolicy
   def initialize(public_hashtag_data)
     @public_hashtag_data = public_hashtag_data
@@ -19,7 +19,10 @@ class PublicHashtagPolicy
   private
 
   def tag_alreay_exist?
-    puts StringofFate::PublicHashtag.all
-    #(content: @public_hashtag_data['content'])
+    all_public_hashtags = StringofFate::PublicHashtag.all
+    all_public_hashtags.each do |tag|
+      return true if tag.content == @public_hashtag_data['content']
+    end
+    false
   end
 end

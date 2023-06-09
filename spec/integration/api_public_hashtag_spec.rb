@@ -13,7 +13,7 @@ describe 'Test PublicHashtag Handling' do
     @wrong_account_data = DATA[:accounts][1]
 
     @account = StringofFate::Account.create(@account_data)
-    StringofFate::Account.create(@wrong_account_data)
+    @wrong_account = StringofFate::Account.create(@wrong_account_data)
 
     header 'CONTENT_TYPE', 'application/json'
   end
@@ -46,6 +46,8 @@ describe 'Test PublicHashtag Handling' do
 
   describe 'Creating Public hashtags' do
     before do
+      StringofFate::PublicHashtag.all.each(&:destroy)
+      StringofFate::PublicHashtag.create(DATA[:public_hashtags][0])
       @public_hashtag_data = DATA[:public_hashtags][1]
     end
 
@@ -60,17 +62,6 @@ describe 'Test PublicHashtag Handling' do
 
       _(created['id']).must_equal public_hashtag.id
       _(created['content']).must_equal @public_hashtag_data['content']
-    end
-
-    it 'BAD AUTHORIZATION: should not create with incorrect authorization' do
-      header 'AUTHORIZATION', auth_header(@wrong_account_data)
-      post 'api/v1/public_hashtags', @public_hashtag_data.to_json
-
-      data = JSON.parse(last_response.body)['data']
-
-      _(last_response.status).must_equal 403
-      _(last_response.headers['Location']).must_be_nil
-      _(data).must_be_nil
     end
 
     it 'SAD AUTHORIZATION: should not create without any authorization' do

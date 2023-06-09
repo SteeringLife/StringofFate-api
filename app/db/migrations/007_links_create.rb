@@ -9,7 +9,7 @@ Sequel.migration do
       foreign_key :platform_id, table: :platforms
       foreign_key :card_id, table: :cards
 
-      String :name_secure
+      String :name_secure, null: false, default: ''
       String :url_secure, null: false, default: ''
 
       DateTime :created_at
