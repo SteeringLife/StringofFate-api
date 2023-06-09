@@ -17,7 +17,6 @@ module StringofFate
           output = PublicHashtag.all
           generated = JSON.pretty_generate(data: output)
         rescue StandardError => e
-          Api.logger.error "Failed to get list of public hashtag: #{e.inspect}"
           routing.halt 403, { message: e.message }.to_json
         end
 
@@ -31,10 +30,8 @@ module StringofFate
           response['Location'] = "#{@link_route}/#{new_tag[:id]}"
           { message: 'Public hashtag created', public_hashtag: new_tag }.to_json
         rescue CreatePublicHashtag::ForbiddenError => e
-          Api.logger.error e.inspect
           routing.halt 403, { message: e.message }.to_json
         rescue CreatePublicHashtag::IllegalRequestError => e
-          Api.logger.error e.inspect
           routing.halt 400, { message: e.message }.to_json
         rescue StandardError => e
           Api.logger.error "Failed to create public hashtag: #{e.inspect}"

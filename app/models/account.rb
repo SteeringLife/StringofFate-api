@@ -18,7 +18,8 @@ module StringofFate
 
     plugin :association_dependencies,
            owned_cards: :destroy,
-           recieved_cards: :nullify
+           recieved_cards: :nullify,
+           private_hashtags: :destroy
 
     plugin :whitelist_security
     set_allowed_columns :username, :email, :password, :realname, :showname

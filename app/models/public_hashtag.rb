@@ -11,6 +11,8 @@ module StringofFate
                  join_table: :cards_public_hashtags,
                  left_key: :public_hashtag_id, right_key: :card_id
 
+    plugin :association_dependencies, cards: :nullify
+
     plugin :timestamps
     plugin :whitelist_security
     set_allowed_columns :content

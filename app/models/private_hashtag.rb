@@ -4,10 +4,11 @@ require 'json'
 require 'sequel'
 
 module StringofFate
-  # Models a platform
-  class PublicHashtag < Sequel::Model
+  # Models a private hashtag
+  class PrivateHashtag < Sequel::Model
     many_to_one :owner, class: :'StringofFate::Account'
-    many_to_one :card
+    many_to_one :card, class: :'StringofFate::Card'
+
     plugin :timestamps
     plugin :whitelist_security
     set_allowed_columns :content
@@ -31,7 +32,7 @@ module StringofFate
           },
           include: {
             card:,
-            account:
+            owner:
           }
         }, options
       )

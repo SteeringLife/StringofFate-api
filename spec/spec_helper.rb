@@ -14,6 +14,7 @@ def wipe_database
   StringofFate::Card.map(&:destroy)
   StringofFate::Account.map(&:destroy)
   StringofFate::PublicHashtag.map(&:destroy)
+  StringofFate::PrivateHashtag.map(&:destroy)
 end
 
 def auth_header(account_data)
@@ -30,5 +31,6 @@ DATA = {
   links: YAML.safe_load(File.read('app/db/seeds/links_seed.yml')),
   platforms: YAML.safe_load(File.read('app/db/seeds/platforms_seed.yml')),
   cards: YAML.safe_load(File.read('app/db/seeds/cards_seed.yml')),
-  public_hashtags: YAML.safe_load(File.read('app/db/seeds/public_hashtags_seed.yml'))
+  public_hashtags: YAML.safe_load(File.read('app/db/seeds/public_hashtags_seed.yml')),
+  private_hashtags: YAML.safe_load(File.read('app/db/seeds/private_hashtags_seed.yml'))
 }.freeze
