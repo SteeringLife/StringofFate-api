@@ -27,8 +27,8 @@ module StringofFate
           )
 
           response.status = 201
-          response['Location'] = "#{@link_route}/#{new_tag[:id]}"
-          { message: 'Public hashtag created', public_hashtag: new_tag }.to_json
+          response['Location'] = "#{@link_route}/#{new_tag.id}"
+          { message: 'Public hashtag created', data: new_tag }.to_json
         rescue CreatePublicHashtag::ForbiddenError => e
           routing.halt 403, { message: e.message }.to_json
         rescue CreatePublicHashtag::IllegalRequestError => e

@@ -46,9 +46,7 @@ describe 'Test PublicHashtag Handling' do
 
   describe 'Creating Public hashtags' do
     before do
-      StringofFate::PublicHashtag.all.each(&:destroy)
-      StringofFate::PublicHashtag.create(DATA[:public_hashtags][0])
-      @public_hashtag_data = DATA[:public_hashtags][1]
+      @public_hashtag_data = DATA[:public_hashtags][0]
     end
 
     it 'HAPPY: should be able to create when everything correct' do
