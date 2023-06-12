@@ -109,6 +109,7 @@ module StringofFate
 
         routing.on('private_hashtags') do
           # POST api/v1/cards/[card_id]/private_hashtags
+          @private_hashtag_route = "#{@card_route}/#{card_id}/private_hashtags"
           routing.post do
             created = CreatePrivateHashtagToCardForOwner.call(
               owner_id: @auth_account.id,
@@ -117,12 +118,12 @@ module StringofFate
             )
 
             response.status = 201
-            response['Location'] = "#{@private_hashtag_route}/#{created[:id]}"
+            response['Location'] = "#{@private_hashtag_route}/#{created.id}"
             { message: 'Private Hashtag saved', data: created }.to_json
-          rescue CreatePrivateHashtagToCardForOwner::IllegalRequestError => e
-            routing.halt 400, { message: e.message }.to_json
           rescue CreatePrivateHashtagToCardForOwner::ForbiddenError => e
             routing.halt 403, { message: e.message }.to_json
+          rescue CreatePrivateHashtagToCardForOwner::IllegalRequestError => e
+            routing.halt 400, { message: e.message }.to_json
           rescue StandardError => e
             puts "CREATE PRIVATE HASHTAG ERROR: #{e.inspect}"
             Api.logger.warn "Could not create private hashtag: #{e.message}"
