@@ -14,6 +14,7 @@ module StringofFate
 
     include SecureRequestHelpers
 
+    UNAUTH_MSG = { message: 'Unauthorized Request' }.to_json
     route do |routing|
       response['Content-Type'] = 'application/json'
 

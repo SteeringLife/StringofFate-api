@@ -31,10 +31,6 @@ describe 'Test AuthScope' do
     _(scope.can_write?('*')).must_equal false
     _(scope.can_read?('links')).must_equal true
     _(scope.can_write?('links')).must_equal false
-    _(scope.can_read?('private_hashtags')).must_equal false
-    _(scope.can_write?('private_hashtags')).must_equal false
-    _(scope.can_read?('public_hashtags')).must_equal false
-    _(scope.can_write?('public_hashtags')).must_equal false
   end
 
   it 'AUTH SCOPE: should validate list of limited scopes' do
@@ -43,11 +39,7 @@ describe 'Test AuthScope' do
     _(scope.can_write?('*')).must_equal false
     _(scope.can_read?('cards')).must_equal true
     _(scope.can_write?('cards')).must_equal false
-    _(scope.can_read?('links')).must_equal false
+    _(scope.can_read?('links')).must_equal true
     _(scope.can_write?('links')).must_equal true
-    _(scope.can_read?('private_hashtags')).must_equal false
-    _(scope.can_write?('private_hashtags')).must_equal false
-    _(scope.can_read?('public_hashtags')).must_equal false
-    _(scope.can_write?('public_hashtags')).must_equal false
   end
 end

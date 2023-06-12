@@ -7,8 +7,7 @@ module StringofFate
   # Web controller for StringofFate API
   class Api < Roda
     route('public_hashtags') do |routing|
-      unauthorized_message = { message: 'Unauthorized Request' }.to_json
-      routing.halt(403, unauthorized_message) unless @auth_account
+      routing.halt(403, UNAUTH_MSG) unless @auth_account
 
       @public_hashtag_route = "#{@api_root}/public_hashtags"
       routing.is do
