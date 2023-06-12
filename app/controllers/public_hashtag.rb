@@ -15,7 +15,7 @@ module StringofFate
         # GET api/v1/public_hashtags
         routing.get do
           output = PublicHashtag.all
-          generated = JSON.pretty_generate(data: output)
+          JSON.pretty_generate(data: output)
         rescue StandardError => e
           routing.halt 403, { message: e.message }.to_json
         end
