@@ -10,7 +10,7 @@ module StringofFate
       unauthorized_message = { message: 'Unauthorized Request' }.to_json
       routing.halt(403, unauthorized_message) unless @auth_account
 
-      @link_route = "#{@api_root}/public_hashtags"
+      @public_hashtag_route = "#{@api_root}/public_hashtags"
       routing.is do
         # GET api/v1/public_hashtags
         routing.get do
@@ -27,7 +27,7 @@ module StringofFate
           )
 
           response.status = 201
-          response['Location'] = "#{@link_route}/#{new_tag.id}"
+          response['Location'] = "#{@public_hashtag_route}/#{new_tag.id}"
           { message: 'Public hashtag created', data: new_tag }.to_json
         rescue CreatePublicHashtag::ForbiddenError => e
           routing.halt 403, { message: e.message }.to_json
