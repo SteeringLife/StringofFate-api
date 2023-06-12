@@ -26,7 +26,7 @@ module StringofFate
 
     def self.create_public_hashtag(public_hashtag_data)
       new_hashtag = PublicHashtag.new(public_hashtag_data)
-      raise IllegalRequestError unless new_hashtag.save
+      new_hashtag.save
     rescue Sequel::MassAssignmentRestriction
       raise IllegalRequestError
     end
