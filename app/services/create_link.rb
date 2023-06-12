@@ -17,14 +17,10 @@ module StringofFate
       end
     end
 
-    def self.call(account:, card:, link_data:)
-      policy = CardPolicy.new(account, card)
+    def self.call(auth:, card:, link_data:)
+      policy = CardPolicy.new(auth[:account], card, auth[:scope])
       raise ForbiddenError unless policy.can_add_links?
 
-      add_link(card, link_data)
-    end
-
-    def self.add_link(card, link_data)
       card.add_link(link_data)
     rescue Sequel::MassAssignmentRestriction
       raise IllegalRequestError

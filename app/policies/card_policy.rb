@@ -3,9 +3,10 @@
 module StringofFate
   # Policy to determine if an account can view a particular card
   class CardPolicy
-    def initialize(account, card)
+    def initialize(account, card, auth_scope = nil)
       @account = account
       @card = card
+      @auth_scope = auth_scope
     end
 
     def can_view?
@@ -37,7 +38,7 @@ module StringofFate
       account_is_owner?
     end
 
-    def can_give?
+    def can_recieve?
       !(account_is_owner? || account_is_reciever?)
     end
 
@@ -50,11 +51,19 @@ module StringofFate
         can_add_links: can_add_links?,
         can_remove_links: can_remove_links?,
         can_give_card_to_reciever: can_give_card_to_reciever?,
-        can_give: can_give?
+        can_recieve: can_recieve?
       }
     end
 
     private
+
+    def can_read?
+      @auth_scope ? @auth_scope.can_read?('cards') : false
+    end
+
+    def can_write?
+      @auth_scope ? @auth_scope.can_write?('cards') : false
+    end
 
     def account_is_owner?
       @card.owner == @account

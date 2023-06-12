@@ -10,11 +10,11 @@ module StringofFate
       end
     end
 
-    def self.call(account:, public_hashtag_id:, card_id:)
+    def self.call(auth:, public_hashtag_id:, card_id:)
       card = Card.first(id: card_id)
       public_hashtag = PublicHashtag.first(id: public_hashtag_id)
 
-      policy = PublicHashtagPolicy.new(account, card)
+      policy = PublicHashtagPolicy.new(auth[:account], card, auth[:scope])
       raise ForbiddenError unless policy.can_delete?
 
       card.remove_public_hashtag(public_hashtag)

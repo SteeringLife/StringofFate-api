@@ -17,10 +17,10 @@ module StringofFate
       end
     end
 
-    def self.call(account:, card:)
+    def self.call(auth:, card:)
       raise NotFoundError unless card
 
-      policy = CardPolicy.new(account, card)
+      policy = CardPolicy.new(auth[:account], card, auth[:scope])
       raise ForbiddenError unless policy.can_view?
 
       card.full_details.merge(policies: policy.summary)

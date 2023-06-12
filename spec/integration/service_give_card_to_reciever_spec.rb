@@ -13,6 +13,7 @@ describe 'Test GiveCardToReciever service' do
 
     card_data = DATA[:cards].first
 
+    @owner_data = DATA[:accounts][0]
     @owner = StringofFate::Account.all[0]
     @reciever = StringofFate::Account.all[1]
     @card = StringofFate::CreateCardForOwner.call(
@@ -21,8 +22,10 @@ describe 'Test GiveCardToReciever service' do
   end
 
   it 'HAPPY: should be able to give a card to a reciever' do
+    auth = authorization(@owner_data)
+
     StringofFate::GiveCardToReciever.call(
-      account: @owner,
+      auth: auth,
       card: @card,
       reciever_email: @reciever.email
     )
@@ -32,9 +35,14 @@ describe 'Test GiveCardToReciever service' do
   end
 
   it 'BAD: should not give card to owner' do
+    auth = StringofFate::AuthenticateAccount.call(
+      username: @owner_data['username'],
+      password: @owner_data['password']
+    )
+
     _(proc {
       StringofFate::GiveCardToReciever.call(
-        account: @owner,
+        auth: auth,
         card: @card,
         reciever_email: @owner.email
       )

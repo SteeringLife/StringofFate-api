@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Policy to determine if account can create a public hashtag
-class PublicHashtagPolicy
+class CreatePublicHashtagPolicy
   def initialize(public_hashtag_data)
     @public_hashtag_data = public_hashtag_data
   end

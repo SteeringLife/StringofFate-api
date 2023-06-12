@@ -17,7 +17,7 @@ module StringofFate
 
     def from_email = ENV.fetch('SENDGRID_FROM_EMAIL')
     def mail_api_key = ENV.fetch('SENDGRID_API_KEY')
-    def mail_url = 'https://api.sendgrid.com/v3/mail/send'
+    def mail_url = ENV.fetch('SENDGRID_API_URL')
 
     def call
       raise(InvalidRegistration, 'Username exists') unless username_available?
@@ -61,8 +61,6 @@ module StringofFate
       res = HTTP.auth("Bearer #{mail_api_key}")
                 .post(mail_url, json: mail_json)
       raise EmailProviderError if res.status >= 300
-    rescue EmailProviderError
-      raise EmailProviderError
     rescue StandardError
       raise(InvalidRegistration,
             'Could not send verification email; please check email address')

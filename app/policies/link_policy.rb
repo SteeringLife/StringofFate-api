@@ -2,9 +2,10 @@
 
 # Policy to determine if account can view a link
 class LinkPolicy
-  def initialize(account, link)
+  def initialize(account, link, auth_scope = nil)
     @account = account
     @link = link
+    @auth_scope = auth_scope
   end
 
   def can_view?
@@ -28,6 +29,14 @@ class LinkPolicy
   end
 
   private
+
+  def can_read?
+    @auth_scope ? @auth_scope.can_read?('links') : false
+  end
+
+  def can_write?
+    @auth_scope ? @auth_scope.can_write?('links') : false
+  end
 
   def account_owns_card?
     @link.card.owner == @account

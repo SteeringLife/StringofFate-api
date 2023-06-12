@@ -10,9 +10,9 @@ module StringofFate
       end
     end
 
-    def self.call(account:, card:, reciever_email:)
+    def self.call(auth:, card:, reciever_email:)
       reciever_account = Account.first(email: reciever_email)
-      policy = GiveCardPolicy.new(card, account, reciever_account)
+      policy = GiveCardPolicy.new(card, auth[:account], reciever_account, auth[:scope])
       raise ForbiddenError unless policy.can_give_card_to_reciever?
 
       card.add_reciever(reciever_account)

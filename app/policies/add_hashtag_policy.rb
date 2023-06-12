@@ -2,10 +2,11 @@
 
 # Policy to determine if account can view a hashtag
 class AddPublicHashtagPolicy
-  def initialize(account, card, public_hashtag)
+  def initialize(account, card, public_hashtag, auth_scope = nil)
     @account = account
     @card = card
     @public_hashtag = public_hashtag
+    @auth_scope = auth_scope
   end
 
   def can_add?
