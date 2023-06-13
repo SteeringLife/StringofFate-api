@@ -12,6 +12,7 @@ Sequel.migration do
       String :password_digest
       String :realname
       String :showname
+
       DateTime :created_at
       DateTime :updated_at
     end

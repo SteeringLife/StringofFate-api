@@ -60,6 +60,7 @@ module StringofFate
     def send_email_verification
       res = HTTP.auth("Bearer #{mail_api_key}")
                 .post(mail_url, json: mail_json)
+
       raise EmailProviderError if res.status >= 300
     rescue StandardError
       raise(InvalidRegistration,
