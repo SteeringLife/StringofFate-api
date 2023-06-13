@@ -12,12 +12,12 @@ describe 'Test GiveCardToReciever service' do
     end
 
     card_data = DATA[:cards].first
-
     @owner_data = DATA[:accounts][0]
     @owner = StringofFate::Account.all[0]
     @reciever = StringofFate::Account.all[1]
+    auth = authorization(@owner_data)
     @card = StringofFate::CreateCardForOwner.call(
-      owner_id: @owner.id, card_data:
+      auth:, card_data:
     )
   end
 
@@ -25,7 +25,7 @@ describe 'Test GiveCardToReciever service' do
     auth = authorization(@owner_data)
 
     StringofFate::GiveCardToReciever.call(
-      auth: auth,
+      auth:,
       card: @card,
       reciever_email: @reciever.email
     )
@@ -42,7 +42,7 @@ describe 'Test GiveCardToReciever service' do
 
     _(proc {
       StringofFate::GiveCardToReciever.call(
-        auth: auth,
+        auth:,
         card: @card,
         reciever_email: @owner.email
       )

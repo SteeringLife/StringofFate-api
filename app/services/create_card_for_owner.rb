@@ -3,8 +3,17 @@
 module StringofFate
   # Service object to create a new card for an owner
   class CreateCardForOwner
-    def self.call(owner_id:, card_data:)
-      Account.find(id: owner_id).add_owned_card(card_data)
+    # Error for not allowed to create cards
+    class ForbiddenError < StandardError
+      def message
+        'You are not allowed to create cards'
+      end
+    end
+
+    def self.call(auth:, card_data:)
+      raise ForbiddenError unless auth[:scope].can_write?('cards')
+
+      auth[:account].add_owned_card(card_data)
     end
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require './app/controllers/helpers.rb'
-include StringofFate::SecureRequestHelpers
+require './app/controllers/helpers'
+include StringofFate::SecureRequestHelpers # rubocop:disable Style/MixinUsage
 
 Sequel.seed(:development) do
   def run
@@ -47,9 +47,7 @@ def create_links
     auth_token = AuthToken.create(card.owner)
     auth = scoped_auth(auth_token)
 
-    StringofFate::CreateLink.call(
-      auth: auth, card: card, link_data: link_info
-    )
+    StringofFate::CreateLink.call(auth:, card:, link_data: link_info)
   end
 end
 
@@ -62,9 +60,7 @@ def add_recievers
     auth = scoped_auth(auth_token)
 
     reciev['reciever_email'].each do |email|
-      StringofFate::GiveCardToReciever.call(
-        auth: auth, card: card, reciever_email: email
-      )
+      StringofFate::GiveCardToReciever.call(auth:, card:, reciever_email: email)
     end
   end
 end
