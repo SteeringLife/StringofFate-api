@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/BlockLength
 # frozen_string_literal: true
 
 require_relative './app'
@@ -40,5 +39,3 @@ module StringofFate
     end
   end
 end
-
-# rubocop:enable Metrics/BlockLength

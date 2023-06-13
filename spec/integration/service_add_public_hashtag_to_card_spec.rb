@@ -15,8 +15,10 @@ describe 'Test adding public hashtag to card' do
 
     @owner = StringofFate::Account.all[0]
     @public_hashtag = StringofFate::PublicHashtag.create(DATA[:public_hashtags][0])
+    @owner_data = DATA[:accounts][0]
+    auth = authorization(@owner_data)
     @card = StringofFate::CreateCardForOwner.call(
-      owner_id: @owner.id, card_data: @card_data
+      auth:, card_data: @card_data
     )
   end
 

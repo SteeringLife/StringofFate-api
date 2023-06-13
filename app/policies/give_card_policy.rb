@@ -20,6 +20,7 @@ module StringofFate
     def can_remove?
       no_you_cant
     end
+
     private
 
     def can_write?

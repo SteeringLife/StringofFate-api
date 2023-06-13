@@ -6,7 +6,7 @@ require_relative './app'
 module StringofFate
   # Web controller for StringofFate API
   class Api < Roda
-    route('auth') do |routing|
+    route('auth') do |routing| # rubocop:disable Metrics/BlockLength
       routing.on 'register' do
         # POST api/v1/auth/register
         routing.post do
@@ -33,8 +33,20 @@ module StringofFate
           auth_account = AuthenticateAccount.call(credentials)
           { data: auth_account }.to_json
         rescue AuthenticateAccount::UnauthorizedError
-          routing.halt '403', { message: 'Invalid credentials' }.to_json
+          routing.halt '401', { message: 'Invalid credentials' }.to_json
         end
+      end
+
+      # POST /api/v1/auth/sso
+      routing.post 'sso' do
+        auth_request = JSON.parse(request.body.read, symbolize_names: true)
+
+        auth_account = AuthorizeSso.new.call(auth_request[:access_token])
+        { data: auth_account }.to_json
+      rescue StandardError => e
+        puts "FAILED to validate Github account: #{e.inspect}"
+        puts e.backtrace
+        routing.halt 400
       end
     end
   end

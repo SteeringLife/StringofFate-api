@@ -6,16 +6,16 @@ require_relative './app'
 module StringofFate
   # Web controller for String of Fate API
   class Api < Roda
-    route('accounts') do |routing|# rubocop:disable Metrics/BlockLength
+    route('accounts') do |routing| # rubocop:disable Metrics/BlockLength
       @account_route = "#{@api_root}/accounts"
 
-      routing.on String do |username| 
+      routing.on String do |username|
         routing.halt(403, UNAUTH_MSG) unless @auth_account
 
         # GET api/v1/accounts/[username]
         routing.get do
           auth = AuthorizeAccount.call(
-            auth: @auth, username: username,
+            auth: @auth, username:,
             auth_scope: AuthScope.new(AuthScope::READ_ONLY)
           )
           { data: auth }.to_json

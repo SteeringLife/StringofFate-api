@@ -46,3 +46,10 @@ DATA = {
   public_hashtags: YAML.safe_load(File.read('app/db/seeds/public_hashtags_seed.yml')),
   private_hashtags: YAML.safe_load(File.read('app/db/seeds/private_hashtags_seed.yml'))
 }.freeze
+
+## SSO fixtures
+GH_ACCOUNT_RESPONSE = YAML.load(
+  File.read('spec/fixtures/github_token_response.yml')
+)
+GOOD_GH_ACCESS_TOKEN = GH_ACCOUNT_RESPONSE.keys.first
+SSO_ACCOUNT = YAML.load(File.read('spec/fixtures/sso_account.yml'))

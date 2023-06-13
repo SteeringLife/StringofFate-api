@@ -16,7 +16,7 @@ module StringofFate
 
         routing.get do
           link = GetLinkQuery.call(
-            auth: @auth,  link: @req_link
+            auth: @auth, link: @req_link
           )
 
           { data: link }.to_json
