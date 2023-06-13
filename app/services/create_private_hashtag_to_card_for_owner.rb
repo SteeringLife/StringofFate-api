@@ -17,8 +17,8 @@ module StringofFate
       end
     end
 
-    def self.call(owner_id:, card_id:, private_hashtag_data:)
-      owner = Account.find(id: owner_id)
+    def self.call(auth:, card_id:, private_hashtag_data:)
+      owner = auth[:account]
       card = Card.find(id: card_id)
 
       policy = PrivateHashtagPolicy.new(owner, card, private_hashtag_data)

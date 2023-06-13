@@ -6,7 +6,7 @@ describe 'Test Account Handling' do
   include Rack::Test::Methods
 
   before do
-    @req_header = { 'CONTENT_TYPE' => 'application/json' }
+    header 'CONTENT_TYPE', 'application/json'
     wipe_database
   end
 
@@ -15,27 +15,30 @@ describe 'Test Account Handling' do
       account_data = DATA[:accounts][0]
       account = StringofFate::Account.create(account_data)
 
+      header 'AUTHORIZATION', auth_header(account_data)
       get "/api/v1/accounts/#{account.username}"
       _(last_response.status).must_equal 200
 
-      result = JSON.parse(last_response.body)['attributes']
-      _(result['username']).must_equal account.username
-      _(result['email']).must_equal account.email
-      _(result['password']).must_be_nil
-      _(result['password_hash']).must_be_nil
-      _(result['realname']).must_equal account.realname
-      _(result['showname']).must_equal account.showname
+      result = JSON.parse(last_response.body)['data']['attributes']
+      account_data = result['account']['attributes']
+      _(account_data['username']).must_equal account.username
+      _(account_data['salt']).must_be_nil
+      _(account_data['password']).must_be_nil
+      _(account_data['password_hash']).must_be_nil
+      _(result['auth_token']).wont_be_nil
+      _(account_data['email']).must_equal account.email
+      _(account_data['realname']).must_equal account.realname
+      _(account_data['showname']).must_equal account.showname
     end
   end
 
   describe 'Account Creation' do
     before do
-      @req_header = { 'CONTENT_TYPE' => 'application/json' }
       @account_data = DATA[:accounts][0]
     end
 
     it 'HAPPY: should be able to create new accounts' do
-      post 'api/v1/accounts', @account_data.to_json, @req_header
+      post 'api/v1/accounts', @account_data.to_json
       _(last_response.status).must_equal 201
       _(last_response.headers['Location'].size).must_be :>, 0
 
@@ -53,7 +56,7 @@ describe 'Test Account Handling' do
     it 'BAD: should not create account with illegal attributes' do
       bad_data = @account_data.clone
       bad_data['created_at'] = '1900-01-01'
-      post 'api/v1/accounts', bad_data.to_json, @req_header
+      post 'api/v1/accounts', bad_data.to_json
 
       _(last_response.status).must_equal 400
       _(last_response.headers['Location']).must_be_nil

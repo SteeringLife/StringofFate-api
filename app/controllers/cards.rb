@@ -7,17 +7,14 @@ module StringofFate
   # Web controller for StringofFate API
   class Api < Roda
     route('cards') do |routing|
-      unauthorized_message = { message: 'Unauthorized Request' }.to_json
-      routing.halt(403, unauthorized_message) unless @auth_account
+      routing.halt(403, UNAUTH_MSG) unless @auth_account
 
       @card_route = "#{@api_root}/cards"
       routing.on String do |card_id|
         @req_card = Card.first(id: card_id)
         # GET api/v1/cards/[ID]
         routing.get do
-          card = GetCardQuery.call(
-            account: @auth_account, card: @req_card
-          )
+          card = GetCardQuery.call(auth: @auth, card: @req_card)
 
           { data: card }.to_json
         rescue GetCardQuery::ForbiddenError => e
@@ -33,7 +30,7 @@ module StringofFate
           # POST api/v1/cards/[card_id]/links
           routing.post do
             new_link = CreateLink.call(
-              account: @auth_account,
+              auth: @auth,
               card: @req_card,
               link_data: JSON.parse(routing.body.read)
             )
@@ -58,7 +55,7 @@ module StringofFate
             req_data = JSON.parse(routing.body.read)
 
             reciever = GiveCardToReciever.call(
-              account: @auth_account,
+              auth: @auth,
               card: @req_card,
               reciever_email: req_data['email']
             )
@@ -77,7 +74,7 @@ module StringofFate
             req_data = JSON.parse(routing.body.read)
 
             public_hashtag = AddPublicHashtag.call(
-              account: @auth_account,
+              auth: @auth,
               card: @req_card,
               public_hashtag_id: req_data['id']
             )
@@ -93,7 +90,7 @@ module StringofFate
           routing.delete do
             req_data = JSON.parse(routing.body.read)
             public_hashtag = RemovePublicHashtag.call(
-              account: @auth_account,
+              auth: @auth,
               public_hashtag_id: req_data['id'],
               card_id:
             )
@@ -112,7 +109,7 @@ module StringofFate
           @private_hashtag_route = "#{@card_route}/#{card_id}/private_hashtags"
           routing.post do
             created = CreatePrivateHashtagToCardForOwner.call(
-              owner_id: @auth_account.id,
+              auth: @auth,
               card_id: @req_card.id,
               private_hashtag_data: JSON.parse(routing.body.read)
             )

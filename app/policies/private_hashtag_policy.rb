@@ -9,7 +9,7 @@ class PrivateHashtagPolicy
   end
 
   def can_create?
-    account_owns_card? and !tag_alreay_exist_on_card?
+    account_recieved_card? and !tag_alreay_exist_on_card?
   end
 
   def can_delete?
@@ -29,7 +29,7 @@ class PrivateHashtagPolicy
     @card.private_hashtags.any? { |tag| tag.content == @private_hashtag_data['content'] }
   end
 
-  def account_owns_card?
+  def account_recieved_card?
     @account.id == @card.owner.id
   end
 end

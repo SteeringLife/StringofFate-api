@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module StringofFate
-  # Add a collaborator to another owner's existing project
+  # Add a collaborator to another owner's existing card
   class GetLinkQuery
     # Error for owner cannot be collaborator
     class ForbiddenError < StandardError
@@ -10,18 +10,18 @@ module StringofFate
       end
     end
 
-    # Error for cannot find a project
+    # Error for cannot find a card
     class NotFoundError < StandardError
       def message
         'We could not find that link'
       end
     end
 
-    # Document for given requestor account
-    def self.call(requestor:, link:)
+    # Link for given requestor account
+    def self.call(auth:, link:)
       raise NotFoundError unless link
 
-      policy = LinkPolicy.new(requestor, link)
+      policy = LinkPolicy.new(auth[:account], link, auth[:scope])
       raise ForbiddenError unless policy.can_view?
 
       link
