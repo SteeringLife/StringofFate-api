@@ -18,7 +18,7 @@ module StringofFate
     end
 
     def self.call(public_hashtag_data:)
-      policy = PublicHashtagPolicy.new(public_hashtag_data)
+      policy = CreatePublicHashtagPolicy.new(public_hashtag_data)
       raise ForbiddenError unless policy.can_create?
 
       create_public_hashtag(public_hashtag_data)

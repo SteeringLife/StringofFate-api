@@ -8,7 +8,7 @@ class PrivateHashtagPolicy
     @private_hashtag_data = private_hashtag_data
   end
 
-  def can_createadd?
+  def can_create?
     account_recieved_card? and !tag_alreay_exist_on_card?
   end
 

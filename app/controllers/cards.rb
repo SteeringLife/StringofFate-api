@@ -109,7 +109,7 @@ module StringofFate
           @private_hashtag_route = "#{@card_route}/#{card_id}/private_hashtags"
           routing.post do
             created = CreatePrivateHashtagToCardForOwner.call(
-              owner_id: @auth_account.id,
+              auth: @auth,
               card_id: @req_card.id,
               private_hashtag_data: JSON.parse(routing.body.read)
             )

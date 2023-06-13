@@ -14,7 +14,7 @@ module StringofFate
       card = Card.first(id: card_id)
       public_hashtag = PublicHashtag.first(id: public_hashtag_id)
 
-      policy = PublicHashtagPolicy.new(auth[:account], card, auth[:scope])
+      policy = CreatePublicHashtagPolicy.new(auth[:account], card, auth[:scope])
       raise ForbiddenError unless policy.can_delete?
 
       card.remove_public_hashtag(public_hashtag)
