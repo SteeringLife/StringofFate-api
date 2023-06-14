@@ -9,10 +9,10 @@ module StringofFate
   class Card < Sequel::Model
     many_to_one :owner, class: :'StringofFate::Account'
 
-    many_to_many :recievers,
+    many_to_many :receivers,
                  class: :'StringofFate::Account',
                  join_table: :accounts_cards,
-                 left_key: :card_id, right_key: :reciever_id
+                 left_key: :card_id, right_key: :receiver_id
 
     one_to_many :links
 
@@ -25,7 +25,7 @@ module StringofFate
 
     plugin :association_dependencies,
            links: :destroy,
-           recievers: :nullify,
+           receivers: :nullify,
            public_hashtags: :nullify,
            private_hashtags: :destroy
 
@@ -66,7 +66,7 @@ module StringofFate
       to_h.merge(
         relationships: {
           owner:,
-          recievers:,
+          receivers:,
           links:,
           public_hashtags:
         }

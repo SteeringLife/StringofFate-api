@@ -49,19 +49,19 @@ module StringofFate
           end
         end
 
-        routing.on('recievers') do
-          # PUT api/v1/cards/[card_id]/recievers
+        routing.on('receivers') do
+          # PUT api/v1/cards/[card_id]/receivers
           routing.put do
             req_data = JSON.parse(routing.body.read)
 
-            reciever = GiveCardToReciever.call(
+            receiver = GiveCardToReceiver.call(
               auth: @auth,
               card: @req_card,
-              reciever_email: req_data['email']
+              receiver_email: req_data['email']
             )
 
-            { data: reciever }.to_json
-          rescue GiveCardToReciever::ForbiddenError => e
+            { data: receiver }.to_json
+          rescue GiveCardToReceiver::ForbiddenError => e
             routing.halt 403, { message: e.message }.to_json
           rescue StandardError
             routing.halt 500, { message: 'API server error' }.to_json

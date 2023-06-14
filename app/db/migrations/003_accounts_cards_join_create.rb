@@ -4,6 +4,6 @@ require 'sequel'
 
 Sequel.migration do
   change do
-    create_join_table(reciever_id: :accounts, card_id: :cards)
+    create_join_table(receiver_id: :accounts, card_id: :cards)
   end
 end

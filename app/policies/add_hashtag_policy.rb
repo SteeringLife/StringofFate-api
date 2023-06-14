@@ -14,7 +14,7 @@ class AddPublicHashtagPolicy
   end
 
   def can_view?
-    account_owns_card? || account_recieve_this_card?
+    account_owns_card? || account_receive_this_card?
   end
 
   def can_delete?
@@ -35,8 +35,8 @@ class AddPublicHashtagPolicy
     @card.owner == @account
   end
 
-  def account_recieve_this_card?
-    @card.recievers.include?(@account)
+  def account_receive_this_card?
+    @card.receivers.include?(@account)
   end
 
   def tag_already_exist_on_the_card?
