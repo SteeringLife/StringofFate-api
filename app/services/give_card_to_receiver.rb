@@ -2,7 +2,7 @@
 
 module StringofFate
   # Add a receiver to another owner's existing card
-  class GiveCardToeceiver
+  class GiveCardToReceiver
     # Error for owner cannot be receiver
     class ForbiddenError < StandardError
       def message
