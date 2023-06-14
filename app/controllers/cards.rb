@@ -133,6 +133,7 @@ module StringofFate
         # GET api/v1/cards
         routing.get do
           cards = CardPolicy::AccountScope.new(@auth_account).viewable
+          cards = cards.map { |card| GetCardQuery.call(auth: @auth, card: card) }
           JSON.pretty_generate(data: cards)
         rescue StandardError
           routing.halt 403, { message: 'Could not find any cards' }.to_json
