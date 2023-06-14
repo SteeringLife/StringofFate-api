@@ -34,6 +34,14 @@ module StringofFate
       account_is_owner?
     end
 
+    def can_add_public_hashtags?
+      account_is_owner?
+    end
+
+    def can_remove_public_hashtags?
+      account_is_owner?
+    end
+
     def can_give_card_to_receiver?
       account_is_owner?
     end
@@ -50,6 +58,8 @@ module StringofFate
         can_discard: can_discard?,
         can_add_links: can_add_links?,
         can_remove_links: can_remove_links?,
+        can_add_public_hashtags: can_add_public_hashtags?,
+        can_remove_public_hashtags: can_remove_public_hashtags?,
         can_give_card_to_receiver: can_give_card_to_receiver?,
         can_receive: can_receive?
       }
