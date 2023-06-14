@@ -7,8 +7,9 @@ module StringofFate
   class AuthorizeSso
     def call(access_token)
       github_account = get_github_account(access_token)
+      puts "Github account: #{github_account.inspect}"
       sso_account = find_or_create_sso_account(github_account)
-
+      puts "SSO account: #{sso_account.inspect}"
       account_and_token(sso_account)
     end
 
@@ -22,6 +23,7 @@ module StringofFate
       raise unless gh_response.status == 200
 
       account = GithubAccount.new(JSON.parse(gh_response))
+      Debug.new.call('account', account.inspect)
       { username: account.username, email: account.email }
     end
 
