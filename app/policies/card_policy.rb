@@ -10,7 +10,7 @@ module StringofFate
     end
 
     def can_view?
-      account_is_owner? || account_is_reciever?
+      account_is_owner? || account_is_receiver?
     end
 
     # duplication is ok!
@@ -23,7 +23,7 @@ module StringofFate
     end
 
     def can_discard?
-      account_is_reciever?
+      account_is_receiver?
     end
 
     def can_add_links?
@@ -34,12 +34,12 @@ module StringofFate
       account_is_owner?
     end
 
-    def can_give_card_to_reciever?
+    def can_give_card_to_receiver?
       account_is_owner?
     end
 
-    def can_recieve?
-      !(account_is_owner? || account_is_reciever?)
+    def can_receive?
+      !(account_is_owner? || account_is_receiver?)
     end
 
     def summary
@@ -50,8 +50,8 @@ module StringofFate
         can_discard: can_discard?,
         can_add_links: can_add_links?,
         can_remove_links: can_remove_links?,
-        can_give_card_to_reciever: can_give_card_to_reciever?,
-        can_recieve: can_recieve?
+        can_give_card_to_receiver: can_give_card_to_receiver?,
+        can_receive: can_receive?
       }
     end
 
@@ -69,8 +69,8 @@ module StringofFate
       @card.owner == @account
     end
 
-    def account_is_reciever?
-      @card.recievers.include?(@account)
+    def account_is_receiver?
+      @card.receivers.include?(@account)
     end
   end
 end

@@ -17,7 +17,7 @@ module StringofFate
           @full_scope
         else
           @full_scope.select do |card|
-            includes_reciever?(card, @current_account)
+            includes_receiver?(card, @current_account)
           end
         end
       end
@@ -25,11 +25,11 @@ module StringofFate
       private
 
       def all_cards(account)
-        account.owned_cards + account.recieved_cards
+        account.owned_cards + account.received_cards
       end
 
-      def includes_reciever?(card, account)
-        card.recievers.include? account
+      def includes_receiver?(card, account)
+        card.receivers.include? account
       end
     end
   end
