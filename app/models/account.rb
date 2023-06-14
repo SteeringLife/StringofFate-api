@@ -9,16 +9,16 @@ module StringofFate
   class Account < Sequel::Model
     one_to_many :owned_cards, class: :'StringofFate::Card', key: :owner_id
 
-    many_to_many :recieved_cards,
+    many_to_many :received_cards,
                  class: :'StringofFate::Card',
                  join_table: :accounts_cards,
-                 left_key: :reciever_id, right_key: :card_id
+                 left_key: :receiver_id, right_key: :card_id
 
     one_to_many :private_hashtags, class: :'StringofFate::PrivateHashtag', key: :owner_id
 
     plugin :association_dependencies,
            owned_cards: :destroy,
-           recieved_cards: :nullify,
+           received_cards: :nullify,
            private_hashtags: :destroy
 
     plugin :whitelist_security
@@ -32,7 +32,7 @@ module StringofFate
     end
 
     def cards
-      owned_cards + recieved_cards
+      owned_cards + received_cards
     end
 
     def password=(new_password)

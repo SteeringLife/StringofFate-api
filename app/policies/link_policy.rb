@@ -9,7 +9,7 @@ class LinkPolicy
   end
 
   def can_view?
-    account_owns_card? || account_recieved_the_card?
+    account_owns_card? || account_received_the_card?
   end
 
   def can_edit?
@@ -42,7 +42,7 @@ class LinkPolicy
     @link.card.owner == @account
   end
 
-  def account_recieved_the_card?
-    @link.card.recievers.include?(@account)
+  def account_received_the_card?
+    @link.card.receivers.include?(@account)
   end
 end
