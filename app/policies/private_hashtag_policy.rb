@@ -19,7 +19,7 @@ class PrivateHashtagPolicy
   def summary
     {
       can_create: can_create?,
-      can_delete: can_delete?,
+      can_delete: can_delete?
     }
   end
 
@@ -39,7 +39,7 @@ class PrivateHashtagPolicy
 
   def account_owns_private_hashtag?
     private_hashtag = PrivateHashtag.secure_find(content: @private_hashtag_data['content'])
-    @account.id == @private_hashtag.owner.id
+    @account.id == private_hashtag.owner.id
   rescue StandardError
     false
   end

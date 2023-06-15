@@ -128,23 +128,7 @@ module StringofFate
           end
         end
       end
-      routing.on('tags') do
-        routing.on String do |tag|
-          # GET api/v1/cards/tags/[tag]
-          routing.get do
-            put "GETTING CARDS WITH TAG #{tag}"
-            cards_list = CardPolicy::AccountScope.new(@auth_account).viewable
-            cards_with_tag = cards_list.select do |card|
-              card.public_hashtags.include?(tag) || card.private_hashtags.include?(tag)
-            end
 
-            cards = cards_with_tag.map { |card| GetCardQuery.call(auth: @auth, card: card) }
-            JSON.pretty_generate(data: cards)
-          rescue StandardError
-            routing.halt 404, { message: 'Could not find any cards with the specified tag' }.to_json
-          end
-        end
-      end
       # GET api/v1/cards
       routing.get do
         cards_list = CardPolicy::AccountScope.new(@auth_account).viewable
