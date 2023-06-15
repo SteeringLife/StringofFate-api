@@ -15,6 +15,7 @@ module StringofFate
         # GET api/v1/cards/[ID]
         routing.get do
           card = GetCardQuery.call(auth: @auth, card: @req_card)
+          puts card
 
           { data: card }.to_json
         rescue GetCardQuery::ForbiddenError => e
@@ -132,8 +133,8 @@ module StringofFate
       routing.is do
         # GET api/v1/cards
         routing.get do
-          cards = CardPolicy::AccountScope.new(@auth_account).viewable
-          cards = cards.map { |card| GetCardQuery.call(auth: @auth, card: card) }
+          cards_list = CardPolicy::AccountScope.new(@auth_account).viewable
+          cards = cards_list.map { |card| GetCardQuery.call(auth: @auth, card:) }
           JSON.pretty_generate(data: cards)
         rescue StandardError
           routing.halt 403, { message: 'Could not find any cards' }.to_json

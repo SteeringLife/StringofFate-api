@@ -62,13 +62,21 @@ module StringofFate
       }
     end
 
-    def full_details
+    def user_private_hashtags(account)
+      private_hashtags.select do |private_hashtag|
+        private_hashtag.owner == account
+      end
+    end
+
+    def full_details(account)
+      user_private_hashtags = user_private_hashtags(account)
       to_h.merge(
         relationships: {
           owner:,
           receivers:,
           links:,
-          public_hashtags:
+          public_hashtags:,
+          private_hashtags: user_private_hashtags
         }
       )
     end
