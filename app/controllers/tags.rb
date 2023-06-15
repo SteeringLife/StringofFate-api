@@ -14,19 +14,11 @@ module StringofFate
       routing.on String do |tag_content|
         @tag = tag_content.to_s
         routing.get do
-          puts "GETTING CARDS WITH TAG #{@tag}"
           @cards_viewlist = CardPolicy::AccountScope.new(@auth_account).viewable
-
-          # view_cards = cards_viewlist.map { |card| GetCardQuery.call(auth: @auth, card:) }
-          # cards = view_cards
-          # JSON.pretty_generate(data: cards)
-          public_hashtag = PublicHashtag.secure_find(content: @tag)
-          private_hashtag = PrivateHashtag.secure_find(content: @tag)
 
           cards_with_tag = @cards_viewlist.select do |card|
             card.public_hashtags.any? { |pub| pub.content.include?(@tag) } || card.user_private_hashtags(@auth_account).any? { |priv| priv.content.include?(@tag) }
           end
-          puts cards_with_tag
 
           cards = cards_with_tag.map { |card| GetCardQuery.call(auth: @auth, card:) }
           JSON.pretty_generate(data: cards)
