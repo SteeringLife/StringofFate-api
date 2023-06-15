@@ -11,7 +11,7 @@ module StringofFate
     end
 
     # Error for tag already exist
-    class ForbiddenError < StandardError
+    class AlreadyExistError < StandardError
       def message
         'Hashtag already exist'
       end
@@ -19,7 +19,7 @@ module StringofFate
 
     def self.call(public_hashtag_data:)
       policy = CreatePublicHashtagPolicy.new(public_hashtag_data)
-      raise ForbiddenError unless policy.can_create?
+      raise AlreadyExistError unless policy.can_create?
 
       create_public_hashtag(public_hashtag_data)
     end

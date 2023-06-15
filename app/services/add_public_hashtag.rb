@@ -10,8 +10,8 @@ module StringofFate
       end
     end
 
-    def self.call(account:, card:, public_hashtag_id:)
-      public_hashtag = PublicHashtag.first(id: public_hashtag_id)
+    def self.call(account:, card:, public_hashtag_content:)
+      public_hashtag = PublicHashtag.secure_find(content: public_hashtag_content)
       policy = AddPublicHashtagPolicy.new(account, card, public_hashtag)
       raise ForbiddenError unless policy.can_add?
 
