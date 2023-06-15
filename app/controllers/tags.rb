@@ -22,7 +22,7 @@ module StringofFate
 
           cards = cards_with_tag.map { |card| GetCardQuery.call(auth: @auth, card:) }
           JSON.pretty_generate(data: cards)
-          run pry
+
         rescue StandardError => e
           Api.logger.error "Unknown error: #{e.message}"
 
