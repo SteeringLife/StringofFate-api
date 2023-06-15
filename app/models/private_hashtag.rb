@@ -22,10 +22,14 @@ module StringofFate
       self.content_secure = SecureDB.encrypt(plaintext)
     end
 
+    def self.secure_find(content:)
+      PrivateHashtag.all.find { |private_hashtag| private_hashtag.content == content }
+    end
+
     def to_json(options = {}) # rubocop:disable Metrics/MethodLength
       JSON(
         {
-          type: 'public_hashtag',
+          type: 'private_hashtag',
           attributes: {
             id:,
             content:
