@@ -20,15 +20,20 @@ module StringofFate
           # view_cards = cards_viewlist.map { |card| GetCardQuery.call(auth: @auth, card:) }
           # cards = view_cards
           # JSON.pretty_generate(data: cards)
+          public_hashtag = PublicHashtag.secure_find(content: @tag)
+          private_hashtag = PrivateHashtag.secure_find(content: @tag)
+
           cards_with_tag = @cards_viewlist.select do |card|
             card.public_hashtags.any? { |pub| pub.content.include?(@tag) } || card.user_private_hashtags(@auth_account).any? { |priv| priv.content.include?(@tag) }
           end
           puts cards_with_tag
-          tag_cards = cards_with_tag.map { |card| GetCardQuery.call(auth: @auth, card:) }
-          puts tag_cards
-          JSON.pretty_generate(data: tag_cards)
+
+          cards = cards_with_tag.map { |card| GetCardQuery.call(auth: @auth, card:) }
+          JSON.pretty_generate(data: cards)
+          run pry
         rescue StandardError => e
           Api.logger.error "Unknown error: #{e.message}"
+
           routing.halt 403, { message: 'Could not find any cards with the specified tag' }.to_json
         end
       end
