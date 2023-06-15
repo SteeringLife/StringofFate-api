@@ -23,7 +23,7 @@ module StringofFate
       policy = CardPolicy.new(auth[:account], card, auth[:scope])
       raise ForbiddenError unless policy.can_view?
 
-      card.full_details.merge(policies: policy.summary)
+      card.full_details(auth[:account]).merge(policies: policy.summary)
     end
   end
 end
