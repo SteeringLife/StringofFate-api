@@ -128,48 +128,46 @@ module StringofFate
           end
         end
       end
-
-      routing.is do
-        routing.on('tags') do
-          routing.on String do |tag|
-            # GET api/v1/cards/tags/[tag]
-            routing.get do
-              cards_list = CardPolicy::AccountScope.new(@auth_account).viewable
-              cards_with_tag = cards_list.select do |card|
-                card.public_hashtags.include?(tag) || card.private_hashtags.include?(tag)
-              end
-
-              cards = cards_with_tag.map { |card| GetCardQuery.call(auth: @auth, card: card) }
-              JSON.pretty_generate(data: cards, search: "##{tag}")
-            rescue StandardError
-              routing.halt 403, { message: 'Could not find any cards with the specified tag' }.to_json
+      routing.on('tags') do
+        routing.on String do |tag|
+          # GET api/v1/cards/tags/[tag]
+          routing.get do
+            put "GETTING CARDS WITH TAG #{tag}"
+            cards_list = CardPolicy::AccountScope.new(@auth_account).viewable
+            cards_with_tag = cards_list.select do |card|
+              card.public_hashtags.include?(tag) || card.private_hashtags.include?(tag)
             end
+
+            cards = cards_with_tag.map { |card| GetCardQuery.call(auth: @auth, card: card) }
+            JSON.pretty_generate(data: cards)
+          rescue StandardError
+            routing.halt 404, { message: 'Could not find any cards with the specified tag' }.to_json
           end
         end
-        # GET api/v1/cards
-        routing.get do
-          cards_list = CardPolicy::AccountScope.new(@auth_account).viewable
-          cards = cards_list.map { |card| GetCardQuery.call(auth: @auth, card:) }
-          JSON.pretty_generate(data: cards)
-        rescue StandardError
-          routing.halt 403, { message: 'Could not find any cards' }.to_json
-        end
+      end
+      # GET api/v1/cards
+      routing.get do
+        cards_list = CardPolicy::AccountScope.new(@auth_account).viewable
+        cards = cards_list.map { |card| GetCardQuery.call(auth: @auth, card:) }
+        JSON.pretty_generate(data: cards)
+      rescue StandardError
+        routing.halt 403, { message: 'Could not find any cards' }.to_json
+      end
 
-        # POST api/v1/cards
-        routing.post do
-          new_data = JSON.parse(routing.body.read)
-          new_card = @auth_account.add_owned_card(new_data)
+      # POST api/v1/cards
+      routing.post do
+        new_data = JSON.parse(routing.body.read)
+        new_card = @auth_account.add_owned_card(new_data)
 
-          response.status = 201
-          response['Location'] = "#{@card_route}/#{new_card.id}"
-          { message: 'Card saved', data: new_card }.to_json
-        rescue Sequel::MassAssignmentRestriction
-          Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
-          routing.halt 400, { message: 'Illegal Request' }.to_json
-        rescue StandardError => e
-          Api.logger.error "Unknown error: #{e.message}"
-          routing.halt 500, { message: 'API server error' }.to_json
-        end
+        response.status = 201
+        response['Location'] = "#{@card_route}/#{new_card.id}"
+        { message: 'Card saved', data: new_card }.to_json
+      rescue Sequel::MassAssignmentRestriction
+        Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
+        routing.halt 400, { message: 'Illegal Request' }.to_json
+      rescue StandardError => e
+        Api.logger.error "Unknown error: #{e.message}"
+        routing.halt 500, { message: 'API server error' }.to_json
       end
     end
   end
