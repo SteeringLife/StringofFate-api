@@ -30,7 +30,6 @@ module StringofFate
       # POST api/v1/accounts
       routing.post do
         new_data = JSON.parse(routing.body.read)
-        Debug.new.call('new_data', new_data)
         new_account = Account.new(new_data)
         raise('Could not save account') unless new_account.save
 

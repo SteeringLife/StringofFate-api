@@ -128,7 +128,7 @@ module StringofFate
           end
         end
       end
-      
+
       # GET api/v1/cards
       routing.get do
         cards_list = CardPolicy::AccountScope.new(@auth_account).viewable
