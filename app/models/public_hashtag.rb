@@ -26,6 +26,10 @@ module StringofFate
       self.content_secure = SecureDB.encrypt(plaintext)
     end
 
+    def self.secure_find(content:)
+      PublicHashtag.all.find { |public_hashtag| public_hashtag.content == content }
+    end
+
     def to_json(options = {})
       JSON(
         {

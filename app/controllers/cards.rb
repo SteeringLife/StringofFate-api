@@ -75,15 +75,16 @@ module StringofFate
             req_data = JSON.parse(routing.body.read)
 
             public_hashtag = AddPublicHashtag.call(
-              auth: @auth,
+              account: @auth[:account],
               card: @req_card,
-              public_hashtag_id: req_data['id']
+              public_hashtag_content: req_data['content']
             )
 
             { data: public_hashtag }.to_json
           rescue AddPublicHashtag::ForbiddenError => e
             routing.halt 403, { message: e.message }.to_json
-          rescue StandardError
+          rescue StandardError => e
+            puts "ADD PUBLIC HASHTAG ERROR: #{e.inspect}"
             routing.halt 500, { message: 'API server error' }.to_json
           end
 
