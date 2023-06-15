@@ -16,22 +16,19 @@ module StringofFate
         routing.get do
           puts "GETTING CARDS WITH TAG #{@tag}"
           @cards_viewlist = CardPolicy::AccountScope.new(@auth_account).viewable
-          puts @cards_viewlist
-          run pry
+
           # view_cards = cards_viewlist.map { |card| GetCardQuery.call(auth: @auth, card:) }
           # cards = view_cards
           # JSON.pretty_generate(data: cards)
           cards_with_tag = @cards_viewlist.select do |card|
-            card.public_hashtags.each{ |pub| pub.content.include?(@tag)} || card.user_private_hashtags(@auth_account).each{|priv| priv.content.include?(@tag)}
+            card.public_hashtags.any? { |pub| pub.content.include?(@tag) } || card.user_private_hashtags(@auth_account).any? { |priv| priv.content.include?(@tag) }
           end
           puts cards_with_tag
-
-          cards = cards_with_tag.map { |card| GetCardQuery.call(auth: @auth, card:) }
-          JSON.pretty_generate(data: cards)
-          run pry
+          tag_cards = cards_with_tag.map { |card| GetCardQuery.call(auth: @auth, card:) }
+          puts tag_cards
+          JSON.pretty_generate(data: tag_cards)
         rescue StandardError => e
           Api.logger.error "Unknown error: #{e.message}"
-          run pry
           routing.halt 403, { message: 'Could not find any cards with the specified tag' }.to_json
         end
       end
