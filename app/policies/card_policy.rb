@@ -42,6 +42,14 @@ module StringofFate
       account_is_owner?
     end
 
+    def can_add_private_hashtags?
+      account_is_owner? || account_is_receiver?
+    end
+
+    def can_remove_private_hashtags?
+      account_is_owner? || account_is_receiver?
+    end
+
     def can_give_card_to_receiver?
       account_is_owner?
     end
@@ -50,7 +58,7 @@ module StringofFate
       !(account_is_owner? || account_is_receiver?)
     end
 
-    def summary
+    def summary # rubocop:disable Metrics/MethodLength
       {
         can_view: can_view?,
         can_edit: can_edit?,
@@ -60,6 +68,8 @@ module StringofFate
         can_remove_links: can_remove_links?,
         can_add_public_hashtags: can_add_public_hashtags?,
         can_remove_public_hashtags: can_remove_public_hashtags?,
+        can_add_private_hashtags: can_add_private_hashtags?,
+        can_remove_private_hashtags: can_remove_private_hashtags?,
         can_give_card_to_receiver: can_give_card_to_receiver?,
         can_receive: can_receive?
       }
