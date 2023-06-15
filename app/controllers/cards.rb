@@ -15,8 +15,6 @@ module StringofFate
         # GET api/v1/cards/[ID]
         routing.get do
           card = GetCardQuery.call(auth: @auth, card: @req_card)
-          puts card
-
           { data: card }.to_json
         rescue GetCardQuery::ForbiddenError => e
           routing.halt 403, { message: e.message }.to_json
