@@ -9,12 +9,11 @@ require 'yaml'
 require_relative 'test_load_all'
 
 def wipe_database
-  StringofFate::Platform.map(&:destroy)
+  StringofFate::PrivateHashtag.map(&:destroy)
+  StringofFate::PublicHashtag.map(&:destroy)
   StringofFate::Link.map(&:destroy)
   StringofFate::Card.map(&:destroy)
   StringofFate::Account.map(&:destroy)
-  StringofFate::PublicHashtag.map(&:destroy)
-  StringofFate::PrivateHashtag.map(&:destroy)
 end
 
 def authenticate(account_data)

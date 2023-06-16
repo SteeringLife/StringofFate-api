@@ -19,7 +19,7 @@ ACCOUNTS_INFO = YAML.load_file("#{DIR}/accounts_seed.yml")
 OWNER_INFO = YAML.load_file("#{DIR}/owners_cards.yml")
 CARD_INFO = YAML.load_file("#{DIR}/cards_seed.yml")
 LINK_INFO = YAML.load_file("#{DIR}/links_seed.yml")
-RECIEV_INFO = YAML.load_file("#{DIR}/cards_receivers.yml")
+RECEIV_INFO = YAML.load_file("#{DIR}/cards_receivers.yml")
 
 def create_accounts
   ACCOUNTS_INFO.each do |account_info|
@@ -52,7 +52,7 @@ def create_links
 end
 
 def add_receivers
-  receiv_info = RECIEV_INFO
+  receiv_info = RECEIV_INFO
   receiv_info.each do |receiv|
     card = StringofFate::Card.first(name: receiv['card_name'])
 

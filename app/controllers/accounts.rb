@@ -8,7 +8,6 @@ module StringofFate
   class Api < Roda
     route('accounts') do |routing| # rubocop:disable Metrics/BlockLength
       @account_route = "#{@api_root}/accounts"
-
       routing.on String do |username|
         routing.halt(403, UNAUTH_MSG) unless @auth_account
 
