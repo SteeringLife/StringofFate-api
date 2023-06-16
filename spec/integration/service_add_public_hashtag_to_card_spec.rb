@@ -26,7 +26,7 @@ describe 'Test adding public hashtag to card' do
     StringofFate::AddPublicHashtag.call(
       account: @owner,
       card: @card,
-      public_hashtag_id: @public_hashtag.id
+      public_hashtag_content: @public_hashtag.content
     )
 
     _(@card.public_hashtags.count).must_equal 1
@@ -37,13 +37,13 @@ describe 'Test adding public hashtag to card' do
     StringofFate::AddPublicHashtag.call(
       account: @owner,
       card: @card,
-      public_hashtag_id: @public_hashtag.id
+      public_hashtag_content: @public_hashtag.content
     )
     _(proc {
       StringofFate::AddPublicHashtag.call(
         account: @owner,
         card: @card,
-        public_hashtag_id: @public_hashtag.id
+        public_hashtag_content: @public_hashtag.content
       )
     }).must_raise StringofFate::AddPublicHashtag::ForbiddenError
   end

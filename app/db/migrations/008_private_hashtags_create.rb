@@ -7,8 +7,8 @@ Sequel.migration do
     create_table(:private_hashtags) do
       primary_key :id
 
-      forign_key :card_id, table: :cards, null: false
-      forign_key :owner_id, table: :accounts, null: false
+      foreign_key :card_id, table: :cards, null: false
+      foreign_key :owner_id, table: :accounts, null: false
 
       String :content_secure, null: false
 
