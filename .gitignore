@@ -3,6 +3,8 @@ _*
 .irb_history
 app/db/store/*
 config/secrets.yml
+coverage/*
+!coverage/.resultset.json
 
 #macos
 .DS_Store
