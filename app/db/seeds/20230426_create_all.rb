@@ -21,7 +21,6 @@ CARD_INFO = YAML.load_file("#{DIR}/cards_seed.yml")
 LINK_INFO = YAML.load_file("#{DIR}/links_seed.yml")
 RECEIV_INFO = YAML.load_file("#{DIR}/cards_receivers.yml")
 
-
 def create_accounts
   ACCOUNTS_INFO.each do |account_info|
     StringofFate::Account.create(account_info)

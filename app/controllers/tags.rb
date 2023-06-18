@@ -17,7 +17,7 @@ module StringofFate
           @cards_viewlist = CardPolicy::AccountScope.new(@auth_account).viewable
 
           cards_with_tag = @cards_viewlist.select do |card|
-            card.public_hashtags.any? { |pub| pub.content.include?(@tag) } || card.user_private_hashtags(@auth_account).any? { |priv| priv.content.include?(@tag) }
+            card.public_hashtags.any? { |pub| pub.content.include?(@tag) } || card.user_private_hashtags(@auth_account).any? { |priv| priv.content.include?(@tag) } # rubocop:disable Layout/LineLength
           end
 
           cards = cards_with_tag.map { |card| GetCardQuery.call(auth: @auth, card:) }

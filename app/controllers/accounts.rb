@@ -39,7 +39,7 @@ module StringofFate
         routing.halt 400, { message: 'Illegal Request' }.to_json
       rescue SignedRequest::VerificationError
         routing.halt 403, { message: 'Must sign request' }.to_json
-      rescue StandardError => e
+      rescue StandardError
         Api.logger.error 'Unknown error saving account'
         routing.halt 500, { message: 'Error creating account' }.to_json
       end
