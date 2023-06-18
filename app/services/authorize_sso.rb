@@ -14,9 +14,10 @@ module StringofFate
     def get_github_account(access_token)
       gh_response = HTTP.headers(
         user_agent: 'StringofFate',
-        authorization: "token #{access_token}",
+        # authorization: "token #{access_token}",
+        authorization: "Bearer #{access_token}",
         accept: 'application/json'
-      ).get(ENV.fetch('GITHUB_ACCOUNT_URL', nil))
+      ).get(ENV.fetch('GITHUB_ACCOUNT_URL'))
 
       raise unless gh_response.status == 200
 
