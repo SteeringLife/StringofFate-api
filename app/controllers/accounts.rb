@@ -28,9 +28,8 @@ module StringofFate
 
       # POST api/v1/accounts
       routing.post do
-        new_data = JSON.parse(routing.body.read)
-        new_account = Account.new(new_data)
-        raise('Could not save account') unless new_account.save
+        account_data = SignedRequest.new(Api.config).parse(request.body.read)
+        new_account = Account.create(account_data)
 
         response.status = 201
         response['Location'] = "#{@account_route}/#{new_account.username}"
@@ -40,7 +39,7 @@ module StringofFate
         routing.halt 400, { message: 'Illegal Request' }.to_json
       rescue SignedRequest::VerificationError
         routing.halt 403, { message: 'Must sign request' }.to_json
-      rescue StandardError
+      rescue StandardError => e
         Api.logger.error 'Unknown error saving account'
         routing.halt 500, { message: 'Error creating account' }.to_json
       end
